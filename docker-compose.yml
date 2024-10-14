@@ -11,14 +11,31 @@ services:
     depends_on:
       - db
 
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
   db:
-    image: postgres:13
+    image: mysql:8.0
+    container_name: mysql_db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydb
+      MYSQL_DATABASE: chatbot_db
+      MYSQL_USER: chatbot_user
+      MYSQL_PASSWORD: temp_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
 
 volumes:
-  postgres_data:
+  db_data:
+
+networks:
+  app-network:
