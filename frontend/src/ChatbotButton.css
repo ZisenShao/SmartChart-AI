@@ -1,20 +1,23 @@
+/* ChatbotButton.css */
 .chatbot-button {
     position: fixed;
+    bottom: 30px; /* Away from the bottom edge */
+    right: 30px;  /* Away from the right edge */
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1000;
-    /* Ensure it's on top of other elements */
-    padding: 0;
+    z-index: 1000; /* Ensure it's on top of other elements */
 }
 
 .chatbot-button img {
-    width: 50px;
-    height: 50px;
+    width: 80px;  /* Button size */
+    height: 80px; /* Button size */
 }
 
 .chat-popup {
     position: fixed;
+    bottom: 120px; /* Popup will appear above the button */
+    right: 30px;   /* Aligned with the button */
     width: 300px;
     height: 350px;
     background-color: white;
@@ -59,4 +62,27 @@
     align-items: flex-start;
     width: calc(100% - 20px);
     box-sizing: border-box;
+}
+
+.chat-footer {
+    display: flex;
+    padding: 10px;
+    background-color: #f1f1f1;
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.send-button {
+    background-color: #0078d7;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

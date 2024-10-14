@@ -1,0 +1,119 @@
+/* Dashboard General Styling */
+.dashboard-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 2500px;
+    margin: 0 auto;
+    min-width: 1000px;  /* Ensures the dashboard doesn't become too narrow */
+  }
+  
+  /* Clinical Notes Heading */
+  .clinical-notes-heading {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Toggle Switch Styling */
+  .toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-switch {
+    background-color: #f0f0f0;
+    border-radius: 25px;
+    display: inline-block;
+    padding: 4px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .toggle-option {
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 25px;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .toggle-option.active {
+    background-color: #b387ff; /* Active state */
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Patient Information Styling */
+  .patient-info p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .patient-info .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  /* Cards Section */
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px; /* Increased gap between cards */
+    margin-top: 20px;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .card h3 .icon {
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Specific Warning Card Styling */
+  .card.warning {
+    background-color: #fff3e6;
+    border-left: 5px solid #ff9800;
+  }
+  
+  .card.warning h3 {
+    color: #ff9800;
+  }
+  
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .card ul li {
+    margin-bottom: 5px;
+  }
+  
+  /* Responsive Layout for Mobile */
+  @media (max-width: 768px) {
+    .cards-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
