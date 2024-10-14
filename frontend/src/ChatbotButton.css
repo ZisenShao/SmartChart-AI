@@ -1,8 +1,6 @@
 /* ChatbotButton.css */
 .chatbot-button {
     position: fixed;
-    bottom: 30px; /* Away from the bottom edge */
-    right: 30px;  /* Away from the right edge */
     background: none;
     border: none;
     cursor: pointer;
@@ -10,8 +8,8 @@
 }
 
 .chatbot-button img {
-    width: 80px;  /* Button size */
-    height: 80px; /* Button size */
+    width: 60px;  /* Button size */
+    height: 60px; /* Button size */
 }
 
 .chat-popup {
