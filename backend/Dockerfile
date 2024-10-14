@@ -1,6 +1,15 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
+# Install required system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    mariadb-client \
+    libmariadb-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /code
 
