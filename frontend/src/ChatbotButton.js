@@ -1,49 +1,117 @@
-import React, { useState, useRef} from 'react';
-import './ChatbotButton.css'; 
+import React, { useState, useRef, useEffect } from 'react';
+import './ChatbotButton.css';
 
 function ChatbotButton() {
     const [showChat, setShowChat] = useState(false);
     const [messages, setMessages] = useState([]); // Store chat messages
     const [newMessage, setNewMessage] = useState(""); // Store input text
     const [buttonPosition, setButtonPosition] = useState({ top: window.innerHeight - 120, left: window.innerWidth - 70 });
+    const [startPosition, setStartPosition] = useState({ top: window.innerHeight - 120, left: window.innerWidth - 70 });
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
     const buttonRef = useRef(null);
+    const chatPopupRef = useRef(null);
 
-    const handleClick = () => {
-        setShowChat(true);
+    const popupWidth = 300;
+    const popupHeight = 350;
+    const buttonWidth = 60;
+    const buttonHeight = 60;
+    const margin = 10; // Margin from the edges of the screen
+
+    useEffect(() => {
+        updateChatPosition();
+    }, [buttonPosition, showChat]);
+
+    const toggleChat = () => {
+        if (showChat) {
+            setIsAnimating(true);
+            setShowChat(false);
+            setTimeout(() => {
+                setButtonPosition(startPosition);
+                setTimeout(() => setIsAnimating(false), 300); // Match this with the CSS transition duration
+            }, 0);
+        } else {
+            setShowChat(true);
+        }
     };
 
     const handleClose = () => {
-        setShowChat(false);
+        toggleChat();
     };
 
     const handleMouseDown = (e) => {
+        if (isAnimating) return; // Prevent dragging during animation
+        
         e.preventDefault();
         const initialX = e.clientX;
         const initialY = e.clientY;
         const initialButtonLeft = buttonPosition.left;
         const initialButtonTop = buttonPosition.top;
 
-        const handleMouseMove = (moveEvent) => {
-            const newX = initialButtonLeft + (moveEvent.clientX - initialX);
-            const newY = initialButtonTop + (moveEvent.clientY - initialY);
-            const pageWidth = window.innerWidth;
-            const pageHeight = window.innerHeight;
-            const buttonWidth = 50;
-            const buttonHeight = 50;
+        let hasMoved = false;
+        let dragThreshold = 5; // pixels
 
-            setButtonPosition({
-                left: Math.min(Math.max(newX, 0), pageWidth - buttonWidth),
-                top: Math.min(Math.max(newY, 0), pageHeight - buttonHeight),
-            });
+        const handleMouseMove = (moveEvent) => {
+            const deltaX = Math.abs(moveEvent.clientX - initialX);
+            const deltaY = Math.abs(moveEvent.clientY - initialY);
+            
+            if (deltaX > dragThreshold || deltaY > dragThreshold) {
+                hasMoved = true;
+                setIsDragging(true);
+            }
+
+            if (hasMoved) {
+                const newX = initialButtonLeft + (moveEvent.clientX - initialX);
+                const newY = initialButtonTop + (moveEvent.clientY - initialY);
+                const pageWidth = window.innerWidth;
+                const pageHeight = window.innerHeight;
+
+                // Calculate the limits for button movement
+                const minLeft = showChat ? (popupWidth + margin) : margin;
+                const maxLeft = pageWidth - buttonWidth - margin;
+                const minTop = showChat ? (popupHeight + margin) : margin;
+                const maxTop = pageHeight - buttonHeight - margin;
+
+                const newButtonPosition = {
+                    left: Math.min(Math.max(newX, minLeft), maxLeft),
+                    top: Math.min(Math.max(newY, minTop), maxTop),
+                };
+
+                setButtonPosition(newButtonPosition);
+            }
         };
 
-        const handleMouseUp = () => {
+        const handleMouseUp = (upEvent) => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
+
+            setIsDragging(false);
+
+            if (!hasMoved) {
+                toggleChat();
+            }
         };
 
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
+    };
+
+    const updateChatPosition = () => {
+        if (!showChat || !chatPopupRef.current) return;
+
+        const pageWidth = window.innerWidth;
+        const pageHeight = window.innerHeight;
+
+        // Calculate chat position based on button position
+        let popupLeft = buttonPosition.left - popupWidth;
+        let popupTop = buttonPosition.top - popupHeight;
+
+        // Ensure chat stays within screen bounds
+        popupLeft = Math.max(margin, Math.min(popupLeft, pageWidth - popupWidth - margin));
+        popupTop = Math.max(margin, Math.min(popupTop, pageHeight - popupHeight - margin));
+
+        chatPopupRef.current.style.left = `${popupLeft}px`;
+        chatPopupRef.current.style.top = `${popupTop}px`;
     };
 
     const handleSendMessage = (e) => {
@@ -61,8 +129,7 @@ function ChatbotButton() {
     return (
         <div>
             <button
-                className="chatbot-button"
-                onClick={handleClick}
+                className={`chatbot-button ${isAnimating ? 'animating' : ''} ${isDragging ? 'dragging' : ''}`}
                 onMouseDown={handleMouseDown}
                 style={{ top: buttonPosition.top, left: buttonPosition.left, position: 'fixed' }} 
                 ref={buttonRef}
@@ -71,7 +138,7 @@ function ChatbotButton() {
             </button>
 
             {showChat && (
-                <div className="chat-popup" style={{ left: buttonPosition.left - 300, top: buttonPosition.top - 350 }}>
+                <div className="chat-popup" ref={chatPopupRef}>
                     <div className="chat-header">
                         <button onClick={handleClose}>Close</button>
                     </div>

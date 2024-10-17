@@ -1,10 +1,19 @@
 /* ChatbotButton.css */
+
 .chatbot-button {
     position: fixed;
     background: none;
     border: none;
     cursor: pointer;
     z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.chatbot-button.animating {
+    transition: all 0.3s ease-in-out;
+}
+
+.chatbot-button.dragging {
+    transition: none;
 }
 
 .chatbot-button img {
@@ -14,25 +23,39 @@
 
 .chat-popup {
     position: fixed;
-    bottom: 120px; /* Popup will appear above the button */
-    right: 30px;   /* Aligned with the button */
     width: 300px;
     height: 350px;
     background-color: white;
-    border: 1px solid #ccc;
+    border: 10px seashell #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 .chat-header {
     padding: 10px;
-    background-color: #D3D3D3;
-    color: #B22222;
+    background-color: #f1f1f1;
     border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat-body {
+    padding: 10px;
+    height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: calc(100% - 5px);
+    box-sizing: border-box;
+}
+
+.chat-footer {
+    padding: 10px;
+    background-color: #f1f1f1;
 }
 
 .message-bubble {
@@ -51,36 +74,19 @@
     align-self: flex-end;
 }
 
-.chat-body {
-    padding: 10px;
-    height: 250px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: calc(100% - 20px);
-    box-sizing: border-box;
-}
-
-.chat-footer {
-    display: flex;
-    padding: 10px;
-    background-color: #f1f1f1;
-}
-
 .chat-input {
     flex-grow: 1;
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 20px;
+    border: 1x solid #ccc;
     margin-right: 10px;
 }
 
 .send-button {
-    background-color: #0078d7;
+    padding: 6px 15px;
+    background-color: #0084ff;
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
 }
