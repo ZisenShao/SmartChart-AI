@@ -41,7 +41,7 @@ function ChatbotButton() {
 
     const handleMouseDown = (e) => {
         if (isAnimating) return; // Prevent dragging during animation
-        
+
         e.preventDefault();
         const initialX = e.clientX;
         const initialY = e.clientY;
@@ -54,7 +54,7 @@ function ChatbotButton() {
         const handleMouseMove = (moveEvent) => {
             const deltaX = Math.abs(moveEvent.clientX - initialX);
             const deltaY = Math.abs(moveEvent.clientY - initialY);
-            
+
             if (deltaX > dragThreshold || deltaY > dragThreshold) {
                 hasMoved = true;
                 setIsDragging(true);
@@ -114,11 +114,33 @@ function ChatbotButton() {
         chatPopupRef.current.style.top = `${popupTop}px`;
     };
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
         if (newMessage.trim() !== "") {
             setMessages([...messages, { text: newMessage, sender: 'user' }]);
             setNewMessage("");
+            //set POST request to backend
+            try {
+                const response = await fetch('http://localhost:8000/api/chat/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: newMessage }), //send the content of message
+                });
+
+                const data = await response.json();
+
+                // deal with the response
+                if (response.ok) {
+                    setMessages(prevMessages => [...prevMessages, { text: data.message, sender: 'bot' }]);
+                } else {
+                    console.error('Error:', data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
             setTimeout(() => {
                 const chatBody = document.querySelector(".chat-body");
                 chatBody.scrollTop = chatBody.scrollHeight;
@@ -131,7 +153,7 @@ function ChatbotButton() {
             <button
                 className={`chatbot-button ${isAnimating ? 'animating' : ''} ${isDragging ? 'dragging' : ''}`}
                 onMouseDown={handleMouseDown}
-                style={{ top: buttonPosition.top, left: buttonPosition.left, position: 'fixed' }} 
+                style={{ top: buttonPosition.top, left: buttonPosition.left, position: 'fixed' }}
                 ref={buttonRef}
             >
                 <img src="/chatbot.png" alt="Chatbot" />

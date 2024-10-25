@@ -1,11 +1,10 @@
-/* ChatbotButton.css */
-
 .chatbot-button {
     position: fixed;
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1000; /* Ensure it's on top of other elements */
+    z-index: 1000;
+    /* Ensure it's on top of other elements */
 }
 
 .chatbot-button.animating {
@@ -17,8 +16,10 @@
 }
 
 .chatbot-button img {
-    width: 60px;  /* Button size */
-    height: 60px; /* Button size */
+    width: 60px;
+    /* Button size */
+    height: 60px;
+    /* Button size */
 }
 
 .chat-popup {
@@ -61,24 +62,29 @@
 .message-bubble {
     padding: 8px 12px;
     margin: 4px 10px;
-    background-color: #0078d7;
     border-radius: 15px;
     max-width: calc(100% - 20px);
     word-wrap: break-word;
-    color: white;
-    align-self: flex-end;
     box-sizing: border-box;
 }
 
 .message-bubble.user {
+    background-color: #0078d7;
+    color: white;
     align-self: flex-end;
+}
+
+.message-bubble.bot {
+    background-color: #f1f1f1;
+    color: black;
+    align-self: flex-start;
 }
 
 .chat-input {
     flex-grow: 1;
     padding: 10px;
     border-radius: 20px;
-    border: 1x solid #ccc;
+    border: 1px solid #ccc;
     margin-right: 10px;
 }
 

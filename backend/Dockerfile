@@ -16,6 +16,10 @@ WORKDIR /code
 # Install dependencies
 COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install requests
+RUN pip install -q -U google-generativeai
+RUN pip install django-cors-headers
+RUN pip install python-dotenv
 
 # Copy the current directory contents into the container at /code
 COPY . /code/
