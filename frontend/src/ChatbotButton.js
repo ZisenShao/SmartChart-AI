@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { marked } from 'marked';
 import './ChatbotButton.css';
 
 function ChatbotButton() {
@@ -166,9 +167,11 @@ function ChatbotButton() {
                     </div>
                     <div className="chat-body">
                         {messages.map((message, index) => (
-                            <div key={index} className={`message-bubble ${message.sender}`}>
-                                {message.text}
-                            </div>
+                            <div
+                                key={index}
+                                className={`message-bubble ${message.sender}`}
+                                dangerouslySetInnerHTML={{ __html: marked(message.text) }}
+                            />
                         ))}
                     </div>
                     <div className="chat-footer">

@@ -63,9 +63,15 @@
     padding: 8px 12px;
     margin: 4px 10px;
     border-radius: 15px;
+    display: inline-block;
     max-width: calc(100% - 20px);
     word-wrap: break-word;
     box-sizing: border-box;
+    text-align: left;
+}
+
+.message-bubble p {
+    margin: 0;
 }
 
 .message-bubble.user {
