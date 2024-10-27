@@ -1,0 +1,155 @@
+[
+  {
+    "name": "John Smith",
+    "date_visited": "2023-10-01",
+    "gender": "Male",
+    "age": 45,
+    "symptoms": ["Chest pain", "Shortness of breath"],
+    "diagnosis": "Angina",
+    "medications": ["Nitroglycerin", "Aspirin"],
+    "key_test_results": {
+      "ECG": "Abnormal",
+      "Cholesterol": "High"
+    },
+    "allergies": ["Penicillin"],
+    "doctor_notes": "Recommend lifestyle changes and medication adherence.",
+    "follow_up_date": "2023-10-15"
+  },
+  {
+    "name": "Mary Johnson",
+    "date_visited": "2023-10-02",
+    "gender": "Female",
+    "age": 30,
+    "symptoms": ["Headache", "Nausea"],
+    "diagnosis": "Migraine",
+    "medications": ["Sumatriptan"],
+    "key_test_results": {
+      "MRI": "Normal"
+    },
+    "allergies": ["None"],
+    "doctor_notes": "Advised to avoid triggers and monitor symptoms.",
+    "follow_up_date": "2023-11-02"
+  },
+  {
+    "name": "Robert Brown",
+    "date_visited": "2023-10-03",
+    "gender": "Male",
+    "age": 60,
+    "symptoms": ["Frequent urination", "Thirst"],
+    "diagnosis": "Type 2 Diabetes",
+    "medications": ["Metformin"],
+    "key_test_results": {
+      "Blood Sugar": "High",
+      "HbA1c": "8.5%"
+    },
+    "allergies": ["Sulfa drugs"],
+    "doctor_notes": "Discussed diet and exercise plans.",
+    "follow_up_date": "2023-10-31"
+  },
+  {
+    "name": "Patricia Davis",
+    "date_visited": "2023-10-04",
+    "gender": "Female",
+    "age": 50,
+    "symptoms": ["Joint pain", "Stiffness"],
+    "diagnosis": "Arthritis",
+    "medications": ["Ibuprofen"],
+    "key_test_results": {
+      "X-ray": "Joint degeneration"
+    },
+    "allergies": ["None"],
+    "doctor_notes": "Suggested physical therapy.",
+    "follow_up_date": "2023-11-04"
+  },
+  {
+    "name": "Michael Miller",
+    "date_visited": "2023-10-05",
+    "gender": "Male",
+    "age": 28,
+    "symptoms": ["Sore throat", "Fever"],
+    "diagnosis": "Strep Throat",
+    "medications": ["Amoxicillin"],
+    "key_test_results": {
+      "Throat Culture": "Positive for Streptococcus"
+    },
+    "allergies": ["None"],
+    "doctor_notes": "Complete the full course of antibiotics.",
+    "follow_up_date": "2023-10-12"
+  },
+  {
+    "name": "Linda Wilson",
+    "date_visited": "2023-10-06",
+    "gender": "Female",
+    "age": 35,
+    "symptoms": ["Abdominal pain", "Bloating"],
+    "diagnosis": "Irritable Bowel Syndrome",
+    "medications": ["Antispasmodics"],
+    "key_test_results": {
+      "Endoscopy": "No significant findings"
+    },
+    "allergies": ["Gluten"],
+    "doctor_notes": "Recommend dietary changes.",
+    "follow_up_date": "2023-11-06"
+  },
+  {
+    "name": "William Moore",
+    "date_visited": "2023-10-07",
+    "gender": "Male",
+    "age": 55,
+    "symptoms": ["Back pain"],
+    "diagnosis": "Herniated Disc",
+    "medications": ["Pain relievers"],
+    "key_test_results": {
+      "MRI": "Disc protrusion at L4-L5"
+    },
+    "allergies": ["NSAIDs"],
+    "doctor_notes": "Refer to orthopedic specialist.",
+    "follow_up_date": "2023-10-21"
+  },
+  {
+    "name": "Barbara Taylor",
+    "date_visited": "2023-10-08",
+    "gender": "Female",
+    "age": 22,
+    "symptoms": ["Cough", "Wheezing"],
+    "diagnosis": "Asthma",
+    "medications": ["Inhaler"],
+    "key_test_results": {
+      "Spirometry": "Reduced FEV1"
+    },
+    "allergies": ["Dust mites"],
+    "doctor_notes": "Educated on inhaler use.",
+    "follow_up_date": "2023-11-08"
+  },
+  {
+    "name": "James Anderson",
+    "date_visited": "2023-10-09",
+    "gender": "Male",
+    "age": 40,
+    "symptoms": ["Fatigue", "Weight gain"],
+    "diagnosis": "Hypothyroidism",
+    "medications": ["Levothyroxine"],
+    "key_test_results": {
+      "TSH": "High"
+    },
+    "allergies": ["None"],
+    "doctor_notes": "Adjust medication dosage.",
+    "follow_up_date": "2023-11-09"
+  },
+  {
+    "name": "Elizabeth Thomas",
+    "date_visited": "2023-10-10",
+    "gender": "Female",
+    "age": 65,
+    "symptoms": ["Vision loss", "Eye pain"],
+    "diagnosis": "Glaucoma",
+    "medications": ["Eye drops"],
+    "key_test_results": {
+      "Eye Pressure": "Elevated",
+      "Visual Field Test": "Peripheral vision loss"
+    },
+    "allergies": ["None"],
+    "doctor_notes": "Scheduled for surgery consultation.",
+    "follow_up_date": "2023-10-24"
+  }
+]
