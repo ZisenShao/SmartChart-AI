@@ -9,10 +9,10 @@ services:
     env_file:
       - ./backend/.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Wait for db to be healthy
     networks:
       - app-network
-
 
   frontend:
     build: ./frontend
@@ -36,6 +36,11 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:  # Health check for the database
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s  # Check every 10 seconds
+      timeout: 5s    # Time out after 5 seconds
+      retries: 5      # Retry 5 times before marking as unhealthy
 
 volumes:
   db_data:
