@@ -14,7 +14,7 @@ function ChatbotButton() {
     const chatPopupRef = useRef(null);
 
     const popupWidth = 300;
-    const popupHeight = 350;
+    const popupHeight = 500;
     const buttonWidth = 60;
     const buttonHeight = 60;
     const margin = 10; // Margin from the edges of the screen
