@@ -21,12 +21,17 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="toggle-container">
-        <button
-          className={`toggle-option ${isFriendlyMode ? "" : "active"}`}
-          onClick={toggleMode}
-        >
-          {isFriendlyMode ? "Default Mode" : "Friendly Mode"}
-        </button>
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={isFriendlyMode}
+            onChange={toggleMode}
+          />
+          <span className="slider"></span>
+        </label>
+        <span className="toggle-label">
+          {isFriendlyMode ? "Friendly Mode" : "Default Mode"}
+        </span>
       </div>
 
       <h1 className="clinical-notes-heading">
