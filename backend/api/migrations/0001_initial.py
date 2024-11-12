@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('password', models.CharField(max_length=128)),
-                ('my_chart_id', models.CharField(max_length=255)),
+                ('my_chart_id', models.CharField(max_length=255, null=True, blank=True)),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
             ],
         ),
