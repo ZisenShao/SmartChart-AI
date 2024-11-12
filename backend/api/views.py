@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, generics
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status, generics
 from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
@@ -236,6 +236,7 @@ class CreateUserView(APIView):
             {"message": "User created", "user_id": user.user_id},
             status=status.HTTP_201_CREATED,
         )
+    
 
 class AddMedicalDataView(APIView):
     def post(self, request):
@@ -259,9 +260,8 @@ class AddMedicalDataView(APIView):
                 "medical_data_id": medical_data.medical_data_id,
             },
             status=status.HTTP_201_CREATED,
-        )
-
-
+        )    
+        
 class StartChatSessionView(APIView):
     def post(self, request):
         user_id = request.data.get("user_id")
