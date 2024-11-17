@@ -4,8 +4,8 @@ import "./ChatbotButton.css";
 
 function ChatbotButton() {
   const [showChat, setShowChat] = useState(false);
-  const [messages, setMessages] = useState([]); // Store chat messages
-  const [newMessage, setNewMessage] = useState(""); // Store input text
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
   const [buttonPosition, setButtonPosition] = useState({
     top: window.innerHeight - 120,
     left: window.innerWidth - 70,
@@ -23,7 +23,7 @@ function ChatbotButton() {
   const popupHeight = 500;
   const buttonWidth = 60;
   const buttonHeight = 60;
-  const margin = 10; // Margin from the edges of the screen
+  const margin = 10;
 
   useEffect(() => {
     updateChatPosition();
@@ -35,12 +35,10 @@ function ChatbotButton() {
       setShowChat(false);
       setTimeout(() => {
         setButtonPosition(startPosition);
-        setTimeout(() => setIsAnimating(false), 300); // Match this with the CSS transition duration
+        setTimeout(() => setIsAnimating(false), 300);
       }, 0);
     } else {
       setShowChat(true);
-
-      // Display greeting message if no messages are present
       if (messages.length === 0) {
         setMessages([
           {
@@ -52,12 +50,8 @@ function ChatbotButton() {
     }
   };
 
-  const handleClose = () => {
-    toggleChat();
-  };
-
   const handleMouseDown = (e) => {
-    if (isAnimating) return; // Prevent dragging during animation
+    if (isAnimating) return;
 
     e.preventDefault();
     const initialX = e.clientX;
@@ -66,7 +60,7 @@ function ChatbotButton() {
     const initialButtonTop = buttonPosition.top;
 
     let hasMoved = false;
-    let dragThreshold = 5; // pixels
+    let dragThreshold = 5;
 
     const handleMouseMove = (moveEvent) => {
       const deltaX = Math.abs(moveEvent.clientX - initialX);
@@ -83,7 +77,6 @@ function ChatbotButton() {
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
 
-        // Calculate the limits for button movement
         const minLeft = showChat ? popupWidth + margin : margin;
         const maxLeft = pageWidth - buttonWidth - margin;
         const minTop = showChat ? popupHeight + margin : margin;
@@ -118,11 +111,9 @@ function ChatbotButton() {
     const pageWidth = window.innerWidth;
     const pageHeight = window.innerHeight;
 
-    // Calculate chat position based on button position
     let popupLeft = buttonPosition.left - popupWidth;
     let popupTop = buttonPosition.top - popupHeight;
 
-    // Ensure chat stays within screen bounds
     popupLeft = Math.max(
       margin,
       Math.min(popupLeft, pageWidth - popupWidth - margin)
@@ -141,14 +132,13 @@ function ChatbotButton() {
     if (newMessage.trim() !== "") {
       setMessages([...messages, { text: newMessage, sender: "user" }]);
       setNewMessage("");
-      // Send POST request to backend
       try {
         const response = await fetch("http://localhost:8000/api/chat/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: newMessage }), // Send the content of the message
+          body: JSON.stringify({ message: newMessage }),
         });
 
         const data = await response.json();
@@ -192,7 +182,10 @@ function ChatbotButton() {
       {showChat && (
         <div className="chat-popup" ref={chatPopupRef}>
           <div className="chat-header">
-            <button onClick={handleClose}>Close</button>
+            <h2 className="chat-title">SmartChart AI</h2>
+            <button onClick={toggleChat} className="close-button">
+              ✖
+            </button>
           </div>
           <div className="chat-body">
             {messages.map((message, index) => (
