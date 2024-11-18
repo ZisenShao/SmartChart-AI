@@ -66,7 +66,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="card warning">
+          <div className="card">
             <h3>
               <img src={warning} alt="Symptoms" className="icon" />
               Symptoms You May Experience
@@ -137,7 +137,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="card warning">
+          <div className="card">
             <h3>
               <img src={warning} alt="Symptoms" className="icon" />
               Symptoms You May Experience
