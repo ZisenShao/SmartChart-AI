@@ -14,6 +14,7 @@ function ChatbotButton() {
     top: window.innerHeight - 120,
     left: window.innerWidth - 70,
   });
+  const [chatMode, setChatMode] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const buttonRef = useRef(null);
@@ -25,19 +26,41 @@ function ChatbotButton() {
   const buttonHeight = 60;
   const margin = 10; // Margin from the edges of the screen
 
-  useEffect(() => {
-    updateChatPosition();
-  }, [buttonPosition, showChat]);
+  const calculateChatPosition = () => {
+    if (!chatMode) return null;
+
+    if (chatMode === 'topleft') {
+      return {
+        left: buttonPosition.left - popupWidth,
+        top: buttonPosition.top - popupHeight
+      };
+    } else {
+      return {
+        left: buttonPosition.left + buttonWidth + margin,
+        top: buttonPosition.top + buttonHeight + margin
+      };
+    }
+  };
+
+  const determineChatMode = () => {
+    const hasSpaceLeft = buttonPosition.left > (popupWidth + margin);
+    const hasSpaceTop = buttonPosition.top > (popupHeight + margin);
+
+    return (hasSpaceLeft && hasSpaceTop) ? 'topleft' : 'bottomright';
+  };
 
   const toggleChat = () => {
     if (showChat) {
       setIsAnimating(true);
       setShowChat(false);
+      setChatMode(null);
       setTimeout(() => {
         setButtonPosition(startPosition);
         setTimeout(() => setIsAnimating(false), 300); // Match this with the CSS transition duration
       }, 0);
     } else {
+      const mode = determineChatMode();
+      setChatMode(mode);
       setShowChat(true);
 
       // Display greeting message if no messages are present
@@ -83,11 +106,20 @@ function ChatbotButton() {
         const pageWidth = window.innerWidth;
         const pageHeight = window.innerHeight;
 
-        // Calculate the limits for button movement
-        const minLeft = showChat ? popupWidth + margin : margin;
-        const maxLeft = pageWidth - buttonWidth - margin;
-        const minTop = showChat ? popupHeight + margin : margin;
-        const maxTop = pageHeight - buttonHeight - margin;
+        let minLeft = margin;
+        let maxLeft = pageWidth - buttonWidth - margin;
+        let minTop = margin;
+        let maxTop = pageHeight - buttonHeight - margin;
+
+        if (showChat) {
+          if (chatMode === 'topleft') {
+            minLeft = popupWidth + margin;
+            minTop = popupHeight + margin;
+          } else {
+            maxLeft = pageWidth - (popupWidth + buttonWidth + margin * 2);
+            maxTop = pageHeight - (popupHeight + buttonHeight + margin * 2);
+          }
+        }
 
         const newButtonPosition = {
           left: Math.min(Math.max(newX, minLeft), maxLeft),
@@ -110,30 +142,6 @@ function ChatbotButton() {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-  };
-
-  const updateChatPosition = () => {
-    if (!showChat || !chatPopupRef.current) return;
-
-    const pageWidth = window.innerWidth;
-    const pageHeight = window.innerHeight;
-
-    // Calculate chat position based on button position
-    let popupLeft = buttonPosition.left - popupWidth;
-    let popupTop = buttonPosition.top - popupHeight;
-
-    // Ensure chat stays within screen bounds
-    popupLeft = Math.max(
-      margin,
-      Math.min(popupLeft, pageWidth - popupWidth - margin)
-    );
-    popupTop = Math.max(
-      margin,
-      Math.min(popupTop, pageHeight - popupHeight - margin)
-    );
-
-    chatPopupRef.current.style.left = `${popupLeft}px`;
-    chatPopupRef.current.style.top = `${popupTop}px`;
   };
 
   const handleSendMessage = async (e) => {
@@ -172,6 +180,8 @@ function ChatbotButton() {
     }
   };
 
+  const chatPosition = calculateChatPosition();
+
   return (
     <div>
       <button
@@ -189,8 +199,17 @@ function ChatbotButton() {
         <img src="/chatbot.png" alt="Chatbot" />
       </button>
 
-      {showChat && (
-        <div className="chat-popup" ref={chatPopupRef}>
+      {showChat && chatPosition && (
+        <div 
+          className="chat-popup" 
+          ref={chatPopupRef}
+          style={{ 
+            position: "fixed",
+            top: chatPosition.top,
+            left: chatPosition.left,
+            transition: isDragging ? "none" : "all 0.3s ease"
+          }}
+        >
           <div className="chat-header">
             <button onClick={handleClose}>Close</button>
           </div>
