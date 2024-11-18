@@ -17,6 +17,8 @@ function ChatbotButton() {
   const [chatMode, setChatMode] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [fontSize, setFontSize] = useState(14);
+  
   const buttonRef = useRef(null);
   const chatPopupRef = useRef(null);
 
@@ -25,6 +27,18 @@ function ChatbotButton() {
   const buttonWidth = 60;
   const buttonHeight = 60;
   const margin = 10; // Margin from the edges of the screen
+
+  const increaseFontSize = () => {
+    if (fontSize < 20) {
+      setFontSize(prevSize => prevSize + 2);
+    }
+  };
+
+  const decreaseFontSize = () => {
+    if (fontSize > 10) {
+      setFontSize(prevSize => prevSize - 2);
+    }
+  };
 
   const calculateChatPosition = () => {
     if (!chatMode) return null;
@@ -211,6 +225,11 @@ function ChatbotButton() {
           }}
         >
           <div className="chat-header">
+            <div className="font-controls">
+              <button onClick={decreaseFontSize} className="font-button">A-</button>
+              <span className="font-size-display">{fontSize}px</span>
+              <button onClick={increaseFontSize} className="font-button">A+</button>
+            </div>
             <button onClick={handleClose}>Close</button>
           </div>
           <div className="chat-body">
@@ -218,6 +237,7 @@ function ChatbotButton() {
               <div
                 key={index}
                 className={`message-bubble ${message.sender}`}
+                style={{ fontSize: `${fontSize}px` }}
                 dangerouslySetInnerHTML={{ __html: marked(message.text) }}
               />
             ))}
