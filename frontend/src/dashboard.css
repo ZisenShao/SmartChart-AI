@@ -11,7 +11,8 @@
 .clinical-notes-heading {
   font-size: 36px;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
+  /* Changed to left alignment */
   margin-bottom: 20px;
   color: #333;
 }
@@ -81,6 +82,8 @@ input:checked+.slider:before {
   align-items: center;
   margin-bottom: 10px;
   font-size: 18px;
+  text-align: left;
+  /* Ensure left alignment */
 }
 
 .patient-info .icon {
@@ -103,6 +106,8 @@ input:checked+.slider:before {
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  text-align: left;
+  /* Ensure left alignment */
 }
 
 .card:hover {
@@ -111,7 +116,10 @@ input:checked+.slider:before {
 
 .card h3 {
   font-size: 20px;
-  color: #333;
+  color: #0078d7;
+  /* Changed color for better hierarchy */
+  font-weight: bold;
+  /* Made headings bold */
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -123,6 +131,15 @@ input:checked+.slider:before {
   height: 24px;
 }
 
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card ul li {
+  margin-bottom: 5px;
+}
+
 /* Specific Warning Card Styling */
 .card.warning {
   background-color: #fff3e6;
@@ -131,15 +148,6 @@ input:checked+.slider:before {
 
 .card.warning h3 {
   color: #ff9800;
-}
-
-.card ul {
-  list-style: none;
-  padding: 0;
-}
-
-.card ul li {
-  margin-bottom: 5px;
 }
 
 /* Responsive Layout for Mobile */

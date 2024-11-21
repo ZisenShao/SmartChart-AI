@@ -18,7 +18,8 @@ function ChatbotButton() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fontSize, setFontSize] = useState(14);
-  
+  const [showInitialMessage, setShowInitialMessage] = useState(true); // New state
+
   const buttonRef = useRef(null);
   const chatPopupRef = useRef(null);
 
@@ -30,40 +31,41 @@ function ChatbotButton() {
 
   const increaseFontSize = () => {
     if (fontSize < 20) {
-      setFontSize(prevSize => prevSize + 2);
+      setFontSize((prevSize) => prevSize + 2);
     }
   };
 
   const decreaseFontSize = () => {
     if (fontSize > 10) {
-      setFontSize(prevSize => prevSize - 2);
+      setFontSize((prevSize) => prevSize - 2);
     }
   };
 
   const calculateChatPosition = () => {
     if (!chatMode) return null;
 
-    if (chatMode === 'topleft') {
+    if (chatMode === "topleft") {
       return {
         left: buttonPosition.left - popupWidth,
-        top: buttonPosition.top - popupHeight
+        top: buttonPosition.top - popupHeight,
       };
     } else {
       return {
         left: buttonPosition.left + buttonWidth + margin,
-        top: buttonPosition.top + buttonHeight + margin
+        top: buttonPosition.top + buttonHeight + margin,
       };
     }
   };
 
   const determineChatMode = () => {
-    const hasSpaceLeft = buttonPosition.left > (popupWidth + margin);
-    const hasSpaceTop = buttonPosition.top > (popupHeight + margin);
+    const hasSpaceLeft = buttonPosition.left > popupWidth + margin;
+    const hasSpaceTop = buttonPosition.top > popupHeight + margin;
 
-    return (hasSpaceLeft && hasSpaceTop) ? 'topleft' : 'bottomright';
+    return hasSpaceLeft && hasSpaceTop ? "topleft" : "bottomright";
   };
 
   const toggleChat = () => {
+    setShowInitialMessage(false); // Hide initial message when toggling chat
     if (showChat) {
       setIsAnimating(true);
       setShowChat(false);
@@ -126,7 +128,7 @@ function ChatbotButton() {
         let maxTop = pageHeight - buttonHeight - margin;
 
         if (showChat) {
-          if (chatMode === 'topleft') {
+          if (chatMode === "topleft") {
             minLeft = popupWidth + margin;
             minTop = popupHeight + margin;
           } else {
@@ -198,37 +200,48 @@ function ChatbotButton() {
 
   return (
     <div>
-      <button
-        className={`chatbot-button ${isAnimating ? "animating" : ""} ${
-          isDragging ? "dragging" : ""
-        }`}
-        onMouseDown={handleMouseDown}
+      <div
+        className="chatbot-container"
         style={{
           top: buttonPosition.top,
           left: buttonPosition.left,
           position: "fixed",
         }}
-        ref={buttonRef}
+        onMouseDown={handleMouseDown}
       >
-        <img src="/chatbot.png" alt="Chatbot" />
-      </button>
+        <button
+          className={`chatbot-button ${isAnimating ? "animating" : ""} ${
+            isDragging ? "dragging" : ""
+          }`}
+          ref={buttonRef}
+        >
+          <img src="/chatbot.png" alt="Chatbot" />
+        </button>
+        {showInitialMessage && (
+          <div className="chatbot-initial-message">Hi - ask me anything!</div>
+        )}
+      </div>
 
       {showChat && chatPosition && (
-        <div 
-          className="chat-popup" 
+        <div
+          className="chat-popup"
           ref={chatPopupRef}
-          style={{ 
+          style={{
             position: "fixed",
             top: chatPosition.top,
             left: chatPosition.left,
-            transition: isDragging ? "none" : "all 0.3s ease"
+            transition: isDragging ? "none" : "all 0.3s ease",
           }}
         >
           <div className="chat-header">
             <div className="font-controls">
-              <button onClick={decreaseFontSize} className="font-button">A-</button>
+              <button onClick={decreaseFontSize} className="font-button">
+                A-
+              </button>
               <span className="font-size-display">{fontSize}px</span>
-              <button onClick={increaseFontSize} className="font-button">A+</button>
+              <button onClick={increaseFontSize} className="font-button">
+                A+
+              </button>
             </div>
             <button onClick={handleClose}>Close</button>
           </div>

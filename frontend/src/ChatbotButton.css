@@ -1,5 +1,9 @@
-.chatbot-button {
+.chatbot-container {
     position: fixed;
+    z-index: 1000;
+}
+
+.chatbot-button {
     background: none;
     border: none;
     cursor: pointer;
@@ -20,6 +24,28 @@
     /* Button size */
     height: 60px;
     /* Button size */
+}
+
+.chatbot-initial-message {
+    background-color: #0078d7;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 15px;
+    position: absolute;
+    top: -40px;
+    /* Adjust as needed */
+    left: 0;
+    white-space: nowrap;
+}
+
+.chatbot-initial-message::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #0078d7 transparent transparent transparent;
 }
 
 .chat-popup {
@@ -69,6 +95,7 @@
     min-width: 40px;
     text-align: center;
 }
+
 .chat-body {
     padding: 10px;
     height: 400px;
