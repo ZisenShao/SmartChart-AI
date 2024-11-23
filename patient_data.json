@@ -1,0 +1,196 @@
+[
+  {
+    "patientInfo": {
+      "name": "Michael Thompson",
+      "dateOfVisit": "10/05/2024",
+      "provider": "Dr. Emily Johnson, Neurologist"
+    },
+    "defaultModeData": [
+      {
+        "heading": "Diagnosis",
+        "content": "The patient is diagnosed with migraine headaches, characterized by recurrent, unilateral, pulsating pain associated with photophobia and phonophobia."
+      },
+      {
+        "heading": "Symptoms You May Experience",
+        "content": "Patients may experience intense headache episodes, nausea, vomiting, and sensitivity to light and sound."
+      },
+      {
+        "heading": "Medications Prescribed",
+        "content": [
+          "Sumatriptan 50 mg PRN - a serotonin receptor agonist for acute migraine relief.",
+          "Propranolol 20 mg b.i.d. - a beta-blocker for migraine prophylaxis."
+        ]
+      },
+      {
+        "heading": "Key Test Results",
+        "content": [
+          "MRI Scan: No abnormalities detected.",
+          "Blood Tests: Within normal limits."
+        ]
+      },
+      {
+        "heading": "Lifestyle Recommendations",
+        "content": "Patients are advised to identify and avoid migraine triggers, maintain regular sleep patterns, and manage stress through relaxation techniques."
+      },
+      {
+        "heading": "Next Steps in Care",
+        "content": "Schedule a follow-up appointment in one month to evaluate treatment efficacy and adjust medications if necessary."
+      }
+    ]
+  },
+  {
+    "patientInfo": {
+      "name": "Sarah Williams",
+      "dateOfVisit": "10/10/2024",
+      "provider": "Dr. Robert Lee, Endocrinologist"
+    },
+    "defaultModeData": [
+      {
+        "heading": "Diagnosis",
+        "content": "The patient is diagnosed with type 2 diabetes mellitus, characterized by insulin resistance and hyperglycemia."
+      },
+      {
+        "heading": "Symptoms You May Experience",
+        "content": "Polyuria, polydipsia, unexplained weight loss, and lethargy."
+      },
+      {
+        "heading": "Medications Prescribed",
+        "content": [
+          "Metformin 500 mg b.i.d. - an oral hypoglycemic agent to improve insulin sensitivity.",
+          "Glipizide 5 mg q.d. - a sulfonylurea to stimulate pancreatic insulin secretion."
+        ]
+      },
+      {
+        "heading": "Key Test Results",
+        "content": [
+          "HbA1c: 8.2% - indicative of poor glycemic control.",
+          "Fasting Glucose: 160 mg/dL - elevated blood sugar levels."
+        ]
+      },
+      {
+        "heading": "Lifestyle Recommendations",
+        "content": "Advised to follow a carbohydrate-controlled diet, engage in regular aerobic exercise, and monitor blood glucose levels daily."
+      },
+      {
+        "heading": "Next Steps in Care",
+        "content": "Refer to a diabetes educator and schedule a follow-up appointment in three months to reassess glycemic control."
+      }
+    ]
+  },
+  {
+    "patientInfo": {
+      "name": "David Rodriguez",
+      "dateOfVisit": "10/15/2024",
+      "provider": "Dr. Linda Chen, Pulmonologist"
+    },
+    "defaultModeData": [
+      {
+        "heading": "Diagnosis",
+        "content": "The patient is diagnosed with moderate persistent asthma, characterized by airway hyperresponsiveness and reversible airflow obstruction."
+      },
+      {
+        "heading": "Symptoms You May Experience",
+        "content": "Episodes of dyspnea, wheezing, chest tightness, and coughing, particularly at night or early morning."
+      },
+      {
+        "heading": "Medications Prescribed",
+        "content": [
+          "Albuterol Inhaler PRN - a short-acting beta-agonist for acute symptom relief.",
+          "Fluticasone Inhaler b.i.d. - an inhaled corticosteroid for long-term inflammation control."
+        ]
+      },
+      {
+        "heading": "Key Test Results",
+        "content": [
+          "Spirometry: FEV1 decreased, indicating obstructive lung disease.",
+          "Allergy Testing: Positive IgE response to dust mites."
+        ]
+      },
+      {
+        "heading": "Lifestyle Recommendations",
+        "content": "Recommend environmental control measures to reduce allergen exposure, and adherence to inhaler regimen."
+      },
+      {
+        "heading": "Next Steps in Care",
+        "content": "Monitor peak flow readings and schedule a follow-up in two months to adjust treatment plan as necessary."
+      }
+    ]
+  },
+  {
+    "patientInfo": {
+      "name": "Jessica Patel",
+      "dateOfVisit": "10/20/2024",
+      "provider": "Dr. Mark Wilson, Gastroenterologist"
+    },
+    "defaultModeData": [
+      {
+        "heading": "Diagnosis",
+        "content": "The patient is diagnosed with irritable bowel syndrome (IBS), characterized by functional gastrointestinal disorder with no identifiable organic cause."
+      },
+      {
+        "heading": "Symptoms You May Experience",
+        "content": "Chronic abdominal pain, altered bowel habits (constipation and/or diarrhea), bloating."
+      },
+      {
+        "heading": "Medications Prescribed",
+        "content": [
+          "Dicyclomine 10 mg PRN - an antispasmodic agent to relieve gastrointestinal muscle spasms.",
+          "Psyllium Fiber Supplements - to regulate bowel movements."
+        ]
+      },
+      {
+        "heading": "Key Test Results",
+        "content": [
+          "Colonoscopy: No pathological findings.",
+          "Blood Tests: Normal complete blood count and metabolic panel."
+        ]
+      },
+      {
+        "heading": "Lifestyle Recommendations",
+        "content": "Implement a low-FODMAP diet, increase physical activity, and utilize stress-reduction techniques."
+      },
+      {
+        "heading": "Next Steps in Care",
+        "content": "Referral to a dietitian for nutritional counseling and schedule a follow-up in six weeks to assess symptom improvement."
+      }
+    ]
+  },
+  {
+    "patientInfo": {
+      "name": "Daniel Kim",
+      "dateOfVisit": "10/25/2024",
+      "provider": "Dr. Susan Martinez, Orthopedic Surgeon"
+    },
+    "defaultModeData": [
+      {
+        "heading": "Diagnosis",
+        "content": "The patient is diagnosed with a medial meniscus tear in the left knee, confirmed via MRI imaging."
+      },
+      {
+        "heading": "Symptoms You May Experience",
+        "content": "Joint line pain, swelling, decreased range of motion, and mechanical symptoms like locking or clicking."
+      },
+      {
+        "heading": "Medications Prescribed",
+        "content": [
+          "Ibuprofen 400 mg q6h PRN - a nonsteroidal anti-inflammatory drug for pain and inflammation management."
+        ]
+      },
+      {
+        "heading": "Key Test Results",
+        "content": [
+          "MRI: Confirmed tear of the medial meniscus.",
+          "X-Ray: No osseous abnormalities detected."
+        ]
+      },
+      {
+        "heading": "Lifestyle Recommendations",
+        "content": "Recommend RICE protocol (Rest, Ice, Compression, Elevation) and avoidance of activities that exacerbate knee pain."
+      },
+      {
+        "heading": "Next Steps in Care",
+        "content": "Schedule a consultation to discuss arthroscopic surgery and initiate preoperative physical therapy."
+      }
+    ]
+  }
+]
