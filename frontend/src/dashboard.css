@@ -11,8 +11,7 @@
 .clinical-notes-heading {
   font-size: 36px;
   font-weight: bold;
-  text-align: left;
-  /* Changed to left alignment */
+  text-align: center;
   margin-bottom: 20px;
   color: #333;
 }
