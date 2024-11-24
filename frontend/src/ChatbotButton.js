@@ -70,16 +70,26 @@ function ChatbotButton() {
       setIsAnimating(true);
       setShowChat(false);
       setChatMode(null);
-      setTimeout(() => {
+      
+      // Animate back to original position
+      const animateBackToStart = () => {
+        if (buttonRef.current) {
+          buttonRef.current.classList.add('animating');
+        }
         setButtonPosition(startPosition);
-        setTimeout(() => setIsAnimating(false), 300); // Match this with the CSS transition duration
-      }, 0);
+        setTimeout(() => {
+          setIsAnimating(false);
+          if (buttonRef.current) {
+            buttonRef.current.classList.remove('animating');
+          }
+        }, 300);
+      };
+      requestAnimationFrame(animateBackToStart);
     } else {
       const mode = determineChatMode();
       setChatMode(mode);
       setShowChat(true);
 
-      // Display greeting message if no messages are present
       if (messages.length === 0) {
         setMessages([
           {
@@ -206,6 +216,7 @@ function ChatbotButton() {
           top: buttonPosition.top,
           left: buttonPosition.left,
           position: "fixed",
+          transition: isAnimating ? "all 0.3s ease-in-out" : "none",
         }}
         onMouseDown={handleMouseDown}
       >
