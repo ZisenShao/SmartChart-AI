@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LoginButton from "./LoginButton";
 import clipboard from "./dashboard assets/Clipboard.svg";
 import food from "./dashboard assets/Food.svg";
 import group from "./dashboard assets/Group.svg";
@@ -11,7 +12,7 @@ import warning from "./dashboard assets/Warning.svg";
 import person from "./dashboard assets/person.svg";
 import "./dashboard.css";
 
-const Dashboard = () => {
+const Dashboard = ({ isViewingSample }) => {
   const [isFriendlyMode, setIsFriendlyMode] = useState(false);
 
   const toggleMode = () => {
@@ -20,6 +21,8 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      <LoginButton isViewingSample={isViewingSample} />
+      
       <div className="toggle-container">
         <label className="switch">
           <input
@@ -61,7 +64,7 @@ const Dashboard = () => {
               Diagnosis
             </h3>
             <p>
-              "You have heart disease that sometimes causes chest pain, but it’s
+              "You have heart disease that sometimes causes chest pain, but it's
               stable and manageable."
             </p>
           </div>
