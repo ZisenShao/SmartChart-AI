@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoginButton from "./LoginButton";
 import axios from 'axios';
 import clipboard from "./dashboard assets/Clipboard.svg";
 import food from "./dashboard assets/Food.svg";
@@ -12,7 +13,7 @@ import warning from "./dashboard assets/Warning.svg";
 import person from "./dashboard assets/person.svg";
 import "./dashboard.css";
 
-const Dashboard = () => {
+const Dashboard = ({ isViewingSample }) => {
     const [isFriendlyMode, setIsFriendlyMode] = useState(false);
     const [medicalReport, setMedicalReport] = useState({
         default: null,
@@ -127,6 +128,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
+            <LoginButton isViewingSample={isViewingSample} />
             <div className="toggle-container">
                 <label className="switch">
                     <input
