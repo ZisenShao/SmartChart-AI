@@ -14,6 +14,89 @@ from datetime import datetime
 from typing import Dict, Optional
 import json
 from datetime import datetime
+from django.utils import timezone
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+@csrf_exempt
+def read_medical_report(request):
+    report_path = os.path.join(
+        settings.BASE_DIR, "medical_reports", "john_davis_report.json"
+    )
+
+    try:
+        with open(report_path, "r", encoding="utf-8") as file:
+            report_data = json.load(file)
+
+        return JsonResponse(
+            {
+                "success": True,
+                "medicalReport": report_data,
+            }
+        )
+    except FileNotFoundError:
+        return JsonResponse(
+            {"success": False, "error": "Medical report file not found"}, status=404
+        )
+    except json.JSONDecodeError:
+        return JsonResponse(
+            {"success": False, "error": "Invalid medical report format"}, status=400
+        )
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return JsonResponse(
+            {"success": False, "error": f"An error occurred: {str(e)}"}, status=500
+        )
+
+
+@csrf_exempt
+def convert_to_friendly_mode(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            medical_report = data.get("medicalReport", "{}")
+
+            # Parse the medical report string back into a dictionary
+            report_dict = json.loads(medical_report)
+
+            prompt = f"""Convert the medical report into a clear, concise patient-friendly format. 
+                        Follow these strict guidelines:
+                        - Use simple, direct language
+                        - Limit each section to 2-3 sentences
+                        - Avoid medical jargon
+                        - Provide practical, actionable information
+
+                        Format your response EXACTLY like this:
+
+                        Diagnosis: [Brief, clear explanation of the medical condition]
+                        Symptoms: [What the patient experiences]
+                        Medications: [List of medications with simple explanations]
+                        Test Results: [Key findings explained simply]
+                        Health Tips: [Practical lifestyle recommendations]
+                        Next Steps: [Specific upcoming medical actions or recommendations]
+
+                        Patient Context:
+                        Name: {report_dict['patient']['name']}
+                        Age: {report_dict['history_of_present_illness']['age']}
+                        Chief Complaint: {report_dict['chief_complaint']}
+                        """
+
+            genai.configure(api_key=os.environ["API_KEY"])
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+            friendly_report = response.text
+
+            return JsonResponse({"success": True, "friendlyReport": friendly_report})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=400)
+
+    return JsonResponse(
+        {"success": False, "error": "Invalid request method"}, status=405
+    )
 
 
 # Change it after completing database settings
@@ -191,7 +274,6 @@ class EnhancedChatView(APIView):
                 return med
         return None
 
-from django.utils import timezone
 
 class ChatView(APIView):
     def post(self, request):
@@ -236,7 +318,7 @@ class CreateUserView(APIView):
             {"message": "User created", "user_id": user.user_id},
             status=status.HTTP_201_CREATED,
         )
-    
+
 
 class AddMedicalDataView(APIView):
     def post(self, request):
@@ -260,8 +342,9 @@ class AddMedicalDataView(APIView):
                 "medical_data_id": medical_data.medical_data_id,
             },
             status=status.HTTP_201_CREATED,
-        )    
-        
+        )
+
+
 class StartChatSessionView(APIView):
     def post(self, request):
         user_id = request.data.get("user_id")
@@ -333,28 +416,38 @@ class LogQuestionView(APIView):
 
 # User Authentication
 
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+            return Response(
+                {"message": "User registered successfully"},
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
+            email = serializer.validated_data["email"]
+            password = serializer.validated_data["password"]
             user = authenticate(email=email, password=password)
             if user:
                 user.last_login = timezone.now()
-                user.save(update_fields=['last_login'])
-                
+                user.save(update_fields=["last_login"])
+
                 refresh = RefreshToken.for_user(user)
-                return Response({
-                    'token': str(refresh.access_token),
-                }, status=status.HTTP_200_OK)
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response(
+                    {
+                        "token": str(refresh.access_token),
+                    },
+                    status=status.HTTP_200_OK,
+                )
+            return Response(
+                {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

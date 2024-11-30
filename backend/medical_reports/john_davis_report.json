@@ -1,0 +1,111 @@
+{
+  "patient": {
+    "name": "John Davis",
+    "date_of_service": "09/30/2024",
+    "provider": "Jane Smith, MD, FACC",
+    "department": "Cardiology"
+  },
+  "chief_complaint": "Patient presents with intermittent episodes of substernal chest discomfort associated with physical exertion.",
+  "history_of_present_illness": {
+    "age": 64,
+    "gender": "male",
+    "condition": "known coronary artery disease",
+    "current_condition": "stable angina pectoris",
+    "symptoms": {
+      "chest_discomfort": {
+        "location": "retrosternal",
+        "severity": "4/10",
+        "trigger": "moderate physical exertion",
+        "relief": "rest within 5-7 minutes"
+      },
+      "pain_characteristics": "No radiation of pain, diaphoresis, or associated autonomic symptoms. No episodes of rest angina or crescendo pattern."
+    }
+  },
+  "physical_examination": {
+    "vital_signs": {
+      "bp": "142/88 mmHg",
+      "hr": "76 bpm, regular rhythm",
+      "rr": "16/min",
+      "o2_saturation": "98% on room air",
+      "bmi": "28.4 kg/m²"
+    },
+    "cardiovascular": {
+      "rate_and_rhythm": "Regular rate and rhythm, S1 and S2 normal, no S3 or S4 gallop",
+      "murmur": "Grade II/VI systolic ejection murmur at right upper sternal border",
+      "peripheral_edema": "No peripheral edema"
+    },
+    "respiratory": {
+      "auscultation": "Clear to auscultation bilaterally, no wheezes or rales"
+    },
+    "neurological": {
+      "status": "Alert and oriented x3, no focal deficits"
+    }
+  },
+  "laboratory_findings": {
+    "total_cholesterol": "210 mg/dL",
+    "ldl": "138 mg/dL",
+    "hdl": "42 mg/dL",
+    "triglycerides": "150 mg/dL",
+    "hba1c": "5.8%",
+    "troponin_i": "<0.04 ng/mL (negative)",
+    "bnp": "85 pg/mL"
+  },
+  "diagnostic_studies": {
+    "exercise_stress_test": {
+      "findings": "Reversible perfusion defect in the anterolateral wall, suggestive of inducible ischemia",
+      "ejection_fraction": "52%"
+    }
+  },
+  "assessment": [
+    {
+      "condition": "Stable angina pectoris",
+      "icd_code": "I20.8",
+      "cause": "Secondary to known coronary artery disease",
+      "status": "Currently stable on medical management",
+      "additional_findings": "Evidence of inducible ischemia on stress testing"
+    },
+    {
+      "condition": "Essential hypertension",
+      "icd_code": "I10",
+      "status": "Suboptimal control"
+    },
+    {
+      "condition": "Hyperlipidemia",
+      "icd_code": "E78.5",
+      "status": "Requiring ongoing statin therapy"
+    }
+  ],
+  "plan": {
+    "medications": [
+      "Continue Aspirin 81mg daily for antiplatelet prophylaxis",
+      "Continue Atorvastatin 40mg daily for hyperlipidemia",
+      "Continue Metoprolol 25mg BID for rate control",
+      "PRN Nitroglycerin 0.4mg sublingual for acute anginal episodes"
+    ],
+    "procedures": [
+      {
+        "procedure": "Schedule coronary angiography",
+        "date": "October 5, 2024",
+        "purpose": "To evaluate coronary anatomy and assess for potential revascularization candidates"
+      }
+    ],
+    "lifestyle_modifications": [
+      "Strict adherence to sodium-restricted diet (<2g/day)",
+      "Implementation of DASH diet principles",
+      "Smoking cessation strongly advised",
+      "Enrollment in cardiac rehabilitation program recommended"
+    ],
+    "follow_up": [
+      "Return to clinic in 2 weeks post-angiography",
+      "Continue daily blood pressure monitoring",
+      "Maintain angina diary"
+    ]
+  },
+  "educational_points": [
+    "Patient educated on: Recognition of unstable anginal symptoms requiring immediate medical attention",
+    "Proper technique for sublingual nitroglycerin administration",
+    "Importance of medication compliance",
+    "Cardiac risk factor modification strategies",
+    "Warning signs requiring emergency evaluation"
+  ]
+}
