@@ -3,19 +3,34 @@ import './App.css';
 import ChatPlugin from './ChatbotButton';
 import Dashboard from './dashboard';
 import LoginPage from './LoginPage';
-import LoginButton from './LoginButton';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
+  const [isViewingSample, setIsViewingSample] = useState(false);
+
   return (
     <Router>
       <div className="App">
-        <LoginButton />
         <Routes>
-          <Route path="/" element={<Dashboard />} /> {/* Home route for your dashboard */}
-          <Route path="/login" element={<LoginPage />} /> {/* Route for your login page */}
+          <Route 
+            path="/" 
+            element={
+              <LoginPage 
+                setIsViewingSample={setIsViewingSample} 
+              />
+            } 
+          />
+          <Route 
+            path="/dashboard" 
+            element={
+              <>
+                <Dashboard isViewingSample={isViewingSample} />
+                <ChatPlugin />
+              </>
+            } 
+          />
         </Routes>
-        <ChatPlugin /> {/* This will render the chatbot button */}
       </div>
     </Router>
   );
