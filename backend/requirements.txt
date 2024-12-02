@@ -4,3 +4,6 @@ mysqlclient
 django-cors-headers
 requests
 djangorestframework-simplejwt
+selenium
+beautifulsoup4
+pandas

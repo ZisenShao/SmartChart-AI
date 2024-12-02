@@ -21,6 +21,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.conf import settings
 import logging
+from .webscraping.scraper import setup_driver, scrape_test_results, navigate_and_scrape_visits, login
 
 logger = logging.getLogger(__name__)
 
@@ -451,7 +452,93 @@ class LogQuestionView(APIView):
             {"message": "Question logged", "question_id": question_log.question_id},
             status=status.HTTP_201_CREATED,
         )
+    
+class ScrapeAndProcessDataView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
 
+        if not username or not password:
+            return Response({"error": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            genai.configure(api_key=os.environ["API_KEY"])
+
+            # Paths for output files
+            visits_file = os.path.join(settings.BASE_DIR, "data", "visits_notes.json")
+            test_results_file = os.path.join(settings.BASE_DIR, "data", "test_results.json")
+
+            driver = setup_driver()
+
+            try:
+                login(driver)  # Log in to the MyChart portal
+                navigate_and_scrape_visits(driver, visits_file)  # Scrape visits data
+                scrape_test_results(driver, test_results_file)  # Scrape test results
+            finally:
+                driver.quit()
+
+            with open(visits_file, "r", encoding="utf-8") as vf:
+                visits_data = json.load(vf)
+
+            with open(test_results_file, "r", encoding="utf-8") as tf:
+                test_results_data = json.load(tf)
+
+
+            combined_data = visits_data + test_results_data
+            prompt = f"""You are an assistant tasked with extracting clean medical information from the following data:
+            {json.dumps(combined_data, indent=4)}
+
+            Please return the information in a structured format:
+            - Diagnosis
+            - Symptoms
+            - Medications
+            - Test Results
+            - Next Steps
+            """
+
+            # Generate cleaned data using AI
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+            cleaned_data = response.text
+
+            # Save the cleaned data to the database
+            user_id = request.user.id if request.user.is_authenticated else None
+            medical_data = MedicalData.objects.create(
+                user_id=user_id,
+                data_type="medical_data",
+                data_content={"text": cleaned_data},
+                source="web_scraping"
+            )
+
+            return Response(
+                {"success": True, "cleaned_data": cleaned_data, "medical_data_id": medical_data.id},
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@csrf_exempt
+def submit_two_factor_code(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            code = data.get('code')
+            if not code:
+                return JsonResponse({'error': '2FA code is missing'}, status=400)
+
+            # Save the code to a file
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+            TWO_FACTOR_CODE_FILE = os.path.join(BASE_DIR, "webscraping", "2FAcode.txt")
+            with open(TWO_FACTOR_CODE_FILE, "w") as f:
+                f.write(code)
+
+            return JsonResponse({'message': '2FA code submitted successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 # User Authentication
 

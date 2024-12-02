@@ -11,7 +11,8 @@ from .views import (
     RegisterView,
     LoginView,
     convert_to_friendly_mode,
-    read_medical_report
+    read_medical_report,
+    submit_two_factor_code
 )
 
 
@@ -28,4 +29,5 @@ urlpatterns = [
     path('read_medical_report/', read_medical_report, name='read_medical_report'),
     path('medical-data/', MedicalDataView.as_view(), name='medical_data'),
 
+    path('submit-2fa-code/', submit_two_factor_code, name='submit_2fa_code')
 ]

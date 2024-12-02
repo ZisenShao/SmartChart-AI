@@ -1,0 +1,193 @@
+2024-12-02 01:06:05,091 - INFO - Opening login page...
+2024-12-02 01:13:52,140 - INFO - Opening login page...
+2024-12-02 01:13:53,451 - INFO - Sign in button clicked.
+2024-12-02 01:13:58,472 - INFO - Login successful!
+2024-12-02 01:16:16,364 - INFO - Opening login page...
+2024-12-02 01:16:17,732 - INFO - Sign in button clicked.
+2024-12-02 01:16:22,745 - INFO - Login successful!
+2024-12-02 01:16:50,661 - INFO - Opening login page...
+2024-12-02 01:16:52,813 - INFO - Sign in button clicked.
+2024-12-02 01:16:57,831 - INFO - Login successful!
+2024-12-02 01:18:23,645 - INFO - Opening login page...
+2024-12-02 01:18:25,139 - INFO - Sign in button clicked.
+2024-12-02 01:19:25,189 - INFO - Login successful!
+2024-12-02 01:19:31,411 - INFO - Opening login page...
+2024-12-02 01:19:33,546 - INFO - Sign in button clicked.
+2024-12-02 01:20:12,314 - INFO - Opening login page...
+2024-12-02 01:20:13,444 - INFO - Sign in button clicked.
+2024-12-02 01:34:35,324 - INFO - Opening login page...
+2024-12-02 01:34:36,472 - INFO - Sign in button clicked.
+2024-12-02 01:35:36,484 - INFO - Login successful!
+2024-12-02 01:35:44,944 - INFO - Opening login page...
+2024-12-02 01:35:46,062 - INFO - Sign in button clicked.
+2024-12-02 01:42:31,785 - INFO - Opening login page...
+2024-12-02 01:42:33,385 - INFO - Sign in button clicked.
+2024-12-02 01:42:53,478 - INFO - 2FA code submitted.
+2024-12-02 01:58:55,109 - INFO - Opening login page...
+2024-12-02 01:58:56,634 - INFO - Sign in button clicked.
+2024-12-02 01:59:09,171 - INFO - 2FA code submitted.
+2024-12-02 01:59:11,987 - INFO - Navigated to Visits page.
+2024-12-02 01:59:14,350 - INFO - Clicked 'View Notes' button.
+2024-12-02 01:59:14,454 - INFO - Scraped data saved to data/visits_notes.json
+2024-12-02 02:02:30,454 - INFO - Opening login page...
+2024-12-02 02:02:31,617 - INFO - Sign in button clicked.
+2024-12-02 02:03:08,713 - ERROR - Error during login or 2FA: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="twofactorcode"]"}
+  (Session info: chrome=131.0.6778.86); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000102fafac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000102fa8314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x0000000102a104b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000102a54898 cxxbridge1$string$len + 368748
+4   chromedriver                        0x0000000102a8e0fc cxxbridge1$string$len + 604368
+5   chromedriver                        0x0000000102a490b0 cxxbridge1$string$len + 321668
+6   chromedriver                        0x0000000102a49d00 cxxbridge1$string$len + 324820
+7   chromedriver                        0x0000000102f7ae08 cxxbridge1$str$ptr + 3435328
+8   chromedriver                        0x0000000102f7e120 cxxbridge1$str$ptr + 3448408
+9   chromedriver                        0x0000000102f6217c cxxbridge1$str$ptr + 3333812
+10  chromedriver                        0x0000000102f7e9e0 cxxbridge1$str$ptr + 3450648
+11  chromedriver                        0x0000000102f53988 cxxbridge1$str$ptr + 3274432
+12  chromedriver                        0x0000000102f990f4 cxxbridge1$str$ptr + 3558956
+13  chromedriver                        0x0000000102f99270 cxxbridge1$str$ptr + 3559336
+14  chromedriver                        0x0000000102fa7f88 cxxbridge1$str$ptr + 3620032
+15  libsystem_pthread.dylib             0x000000019c74f2e4 _pthread_start + 136
+16  libsystem_pthread.dylib             0x000000019c74a0fc thread_start + 8
+
+2024-12-02 02:03:15,576 - INFO - Opening login page...
+2024-12-02 02:03:17,046 - INFO - Sign in button clicked.
+2024-12-02 02:03:34,305 - INFO - 2FA code submitted.
+2024-12-02 02:03:38,330 - INFO - Navigated to Visits page.
+2024-12-02 02:03:40,691 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:03:40,734 - ERROR - Error scraping notes for button 1: [Errno 17] File exists: 'data/visits_notes.json'
+2024-12-02 02:09:17,233 - INFO - Opening login page...
+2024-12-02 02:09:18,412 - INFO - Sign in button clicked.
+2024-12-02 02:09:33,568 - INFO - 2FA code submitted.
+2024-12-02 02:09:36,264 - INFO - Navigated to Visits page.
+2024-12-02 02:09:38,763 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:09:38,798 - ERROR - Error scraping notes for button 1: 'dict' object has no attribute 'append'
+2024-12-02 02:09:38,799 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:10:51,057 - INFO - Opening login page...
+2024-12-02 02:10:52,482 - INFO - Sign in button clicked.
+2024-12-02 02:11:05,253 - INFO - 2FA code submitted.
+2024-12-02 02:11:09,386 - INFO - Navigated to Visits page.
+2024-12-02 02:11:11,768 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:11:12,512 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:11:27,652 - INFO - Opening login page...
+2024-12-02 02:11:29,177 - INFO - Sign in button clicked.
+2024-12-02 02:11:45,304 - INFO - 2FA code submitted.
+2024-12-02 02:11:50,858 - INFO - Navigated to Visits page.
+2024-12-02 02:11:53,745 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:11:54,498 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:14:04,169 - INFO - Opening login page...
+2024-12-02 02:14:05,653 - INFO - Sign in button clicked.
+2024-12-02 02:14:22,824 - INFO - 2FA code submitted.
+2024-12-02 02:14:25,669 - INFO - Navigated to Visits page.
+2024-12-02 02:14:27,979 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:14:28,746 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:35:09,069 - INFO - Opening login page...
+2024-12-02 02:35:10,490 - INFO - Sign in button clicked.
+2024-12-02 02:35:26,278 - INFO - 2FA code submitted.
+2024-12-02 02:35:28,224 - INFO - Navigated to Visits page.
+2024-12-02 02:35:30,478 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:35:31,235 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:35:32,067 - INFO - Navigated to Test Results page.
+2024-12-02 02:35:32,658 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 02:35:32,732 - INFO - Clicking test result link 2: INFLUENZA A AND B AND RSV DETECTION.
+2024-12-02 02:35:32,801 - INFO - Clicking test result link 3: COVID-19 LAB SCREENING.
+2024-12-02 02:35:32,864 - INFO - Clicking test result link 4: ECG- 12 LEAD WITHOUT RHYTHM.
+2024-12-02 02:35:32,915 - INFO - All data saved to data/test_results.json
+2024-12-02 02:38:35,828 - INFO - Opening login page...
+2024-12-02 02:38:36,961 - INFO - Sign in button clicked.
+2024-12-02 02:38:50,861 - INFO - 2FA code submitted.
+2024-12-02 02:38:53,214 - INFO - Navigated to Visits page.
+2024-12-02 02:38:55,492 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 02:38:56,263 - INFO - All data saved to data/visits_notes.json
+2024-12-02 02:38:57,158 - INFO - Navigated to Test Results page.
+2024-12-02 02:38:57,714 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 02:38:57,791 - INFO - Clicking test result link 2: INFLUENZA A AND B AND RSV DETECTION.
+2024-12-02 02:38:57,857 - INFO - Clicking test result link 3: COVID-19 LAB SCREENING.
+2024-12-02 02:38:57,924 - INFO - Clicking test result link 4: ECG- 12 LEAD WITHOUT RHYTHM.
+2024-12-02 02:38:57,979 - INFO - All data saved to data/test_results.json
+2024-12-02 02:41:08,199 - INFO - Opening login page...
+2024-12-02 02:41:09,289 - INFO - Sign in button clicked.
+2024-12-02 02:41:32,381 - ERROR - Error during login or 2FA: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000104f4bac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000104f44314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001049ac4b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000104987994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x0000000104a16890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x0000000104a2976c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001049e50b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001049e5d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000104f16e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000104f1a120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000104efe17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000104f1a9e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000104eef988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000104f350f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000104f35270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000104f43f88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c74f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c74a0fc thread_start + 8
+
+2024-12-02 02:41:35,937 - INFO - Opening login page...
+2024-12-02 02:41:37,375 - INFO - Sign in button clicked.
+2024-12-02 02:41:55,548 - INFO - 2FA code submitted.
+2024-12-02 02:41:57,987 - INFO - Navigated to Test Results page.
+2024-12-02 02:41:58,540 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 02:42:18,647 - ERROR - Error scraping test result 1: Message: 
+Stacktrace:
+0   chromedriver                        0x0000000104b6bac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000104b64314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001045cc4b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000104610898 cxxbridge1$string$len + 368748
+4   chromedriver                        0x000000010464a0fc cxxbridge1$string$len + 604368
+5   chromedriver                        0x00000001046050b0 cxxbridge1$string$len + 321668
+6   chromedriver                        0x0000000104605d00 cxxbridge1$string$len + 324820
+7   chromedriver                        0x0000000104b36e08 cxxbridge1$str$ptr + 3435328
+8   chromedriver                        0x0000000104b3a120 cxxbridge1$str$ptr + 3448408
+9   chromedriver                        0x0000000104b1e17c cxxbridge1$str$ptr + 3333812
+10  chromedriver                        0x0000000104b3a9e0 cxxbridge1$str$ptr + 3450648
+11  chromedriver                        0x0000000104b0f988 cxxbridge1$str$ptr + 3274432
+12  chromedriver                        0x0000000104b550f4 cxxbridge1$str$ptr + 3558956
+13  chromedriver                        0x0000000104b55270 cxxbridge1$str$ptr + 3559336
+14  chromedriver                        0x0000000104b63f88 cxxbridge1$str$ptr + 3620032
+15  libsystem_pthread.dylib             0x000000019c74f2e4 _pthread_start + 136
+16  libsystem_pthread.dylib             0x000000019c74a0fc thread_start + 8
+
+2024-12-02 02:42:18,652 - ERROR - Error scraping test result 2: list index out of range
+2024-12-02 02:42:18,655 - ERROR - Error scraping test result 3: list index out of range
+2024-12-02 02:42:18,661 - ERROR - Error scraping test result 4: list index out of range
+2024-12-02 02:42:18,661 - INFO - All data saved to data/test_results.json
+2024-12-02 02:47:04,796 - INFO - Opening login page...
+2024-12-02 02:47:06,223 - INFO - Sign in button clicked.
+2024-12-02 02:47:23,556 - INFO - 2FA code submitted.
+2024-12-02 02:47:26,020 - INFO - Navigated to Test Results page.
+2024-12-02 02:47:26,587 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 02:47:27,233 - INFO - Clicking test result link 2: INFLUENZA A AND B AND RSV DETECTION.
+2024-12-02 02:47:27,844 - INFO - Clicking test result link 3: COVID-19 LAB SCREENING.
+2024-12-02 02:47:28,457 - INFO - Clicking test result link 4: ECG- 12 LEAD WITHOUT RHYTHM.
+2024-12-02 02:47:29,021 - INFO - All data saved to data/test_results.json
+2024-12-02 02:49:34,777 - INFO - Opening login page...
+2024-12-02 02:49:36,202 - INFO - Sign in button clicked.
+2024-12-02 02:49:51,289 - INFO - 2FA code submitted.
+2024-12-02 02:49:53,584 - INFO - Navigated to Test Results page.
+2024-12-02 02:49:54,143 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 02:49:54,770 - INFO - Clicking test result link 2: INFLUENZA A AND B AND RSV DETECTION.
+2024-12-02 02:49:55,380 - INFO - Clicking test result link 3: COVID-19 LAB SCREENING.
+2024-12-02 02:49:55,988 - INFO - Clicking test result link 4: ECG- 12 LEAD WITHOUT RHYTHM.
+2024-12-02 02:49:57,075 - INFO - All data saved to data/test_results.json
+2024-12-02 12:47:08,714 - INFO - Opening login page...
+2024-12-02 12:47:09,943 - INFO - Sign in button clicked.
+2024-12-02 12:47:29,343 - INFO - 2FA code submitted.
+2024-12-02 12:47:31,949 - INFO - Navigated to Visits page.
+2024-12-02 12:47:34,340 - INFO - Clicked 'View Notes' button 1.
+2024-12-02 12:47:35,116 - INFO - All data saved to data/visits_notes.json
+2024-12-02 12:47:35,899 - INFO - Navigated to Test Results page.
+2024-12-02 12:47:36,433 - INFO - Clicking test result link 1: X-RAY CHEST 2 VIEWS.
+2024-12-02 12:47:37,056 - INFO - Clicking test result link 2: INFLUENZA A AND B AND RSV DETECTION.
+2024-12-02 12:47:37,666 - INFO - Clicking test result link 3: COVID-19 LAB SCREENING.
+2024-12-02 12:47:38,281 - INFO - Clicking test result link 4: ECG- 12 LEAD WITHOUT RHYTHM.
+2024-12-02 12:47:38,880 - INFO - All data saved to data/test_results.json
