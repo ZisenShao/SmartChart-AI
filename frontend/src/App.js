@@ -8,6 +8,8 @@ import { useState } from 'react';
 
 function App() {
   const [isViewingSample, setIsViewingSample] = useState(false);
+  
+  // console.log('App - isViewingSample:', isViewingSample);
 
   return (
     <Router>
@@ -26,7 +28,6 @@ function App() {
             element={
               <>
                 <Dashboard isViewingSample={isViewingSample} />
-                <ChatPlugin />
               </>
             } 
           />

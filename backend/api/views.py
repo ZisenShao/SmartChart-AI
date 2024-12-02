@@ -221,39 +221,43 @@ class EnhancedChatView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = []
 
-    def __init__(self):
-        super().__init__()
-        self.patient_info = PatientInfo()
+    def get_sample_report(self):
+        """Get the content of john_davis_report.txt"""
+        try:
+            report_path = os.path.join(
+                settings.BASE_DIR,
+                'medical_reports',
+                'john_davis_report.txt'
+            )
+            with open(report_path, 'r', encoding='utf-8') as file:
+                return file.read()
+        except Exception as e:
+            print(f"Error reading sample report: {str(e)}")
+            return None
 
     def post(self, request):
         try:
             message = request.data.get("message")
             is_sample = request.data.get("is_sample", False)
-            medical_report = request.data.get("medicalReport", "")
             
             if not message:
                 return JsonResponse({"error": "No message provided"}, status=400)
 
-            # For sample mode, use the provided medical report
-            if is_sample and medical_report:
-                context = medical_report
-            # For authenticated users, try to get their medical report
+            # Get context based on mode
+            context = None
+            if is_sample:
+                context = self.get_sample_report()
+                # print(f"Sample context loaded: {bool(context)}")
             elif request.user.is_authenticated:
-                from .medical_data_service import MedicalDataService
-                user_report = MedicalDataService.get_latest_report(request.user.user_id)
-                context = user_report if user_report else ""
-            else:
-                context = ""
+                context = MedicalDataService.get_latest_report(request.user.user_id)
+                # print(f"User context loaded: {bool(context)}")
 
             if not context:
                 return JsonResponse({
                     "success": True,
-                    "message": "Hi there! I see you've reached out. Since I don't have a medical report yet, "
-                              "I can't provide specific information about your health. To best assist you, "
-                              "please provide me with the medical report."
+                    "message": "Hi there! I notice you haven't provided a medical report yet. To best assist you, please upload your medical report first."
                 })
 
-            # Create prompt with available context
             prompt = f"""You are a medical assistant chatbot. Here's the context:
 
             Medical Report:
@@ -281,15 +285,10 @@ class EnhancedChatView(APIView):
 
         except Exception as e:
             print(f"Error in EnhancedChatView: {str(e)}")
-            return JsonResponse({"error": f"Error processing request: {str(e)}"}, status=500)
-        
-    def get_medication_info(self, medication_name: str) -> dict:
-        """Helper method to get specific medication information"""
-        for med in self.patient_info.patient_data["medications"]:
-            if med["name"].lower() == medication_name.lower():
-                return med
-        return None
-
+            return JsonResponse({
+                "success": False, 
+                "error": f"Error processing request: {str(e)}"
+            }, status=500)
 
 class ChatView(APIView):
     def post(self, request):

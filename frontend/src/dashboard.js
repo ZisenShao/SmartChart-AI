@@ -13,6 +13,7 @@ import vector from "./dashboard assets/Vector.svg";
 import warning from "./dashboard assets/Warning.svg";
 import person from "./dashboard assets/person.svg";
 import "./dashboard.css";
+import ChatbotButton from './ChatbotButton';
 
 const Dashboard = ({ isViewingSample }) => {
   const [isFriendlyMode, setIsFriendlyMode] = useState(false);
@@ -179,6 +180,7 @@ const Dashboard = ({ isViewingSample }) => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  // console.log('Dashboard - isViewingSample:', isViewingSample); // Add debug log
 
   return (
     <div className="dashboard-container">
@@ -252,6 +254,7 @@ const Dashboard = ({ isViewingSample }) => {
           )}
         </>
       )}
+      <ChatbotButton isSampleMode={Boolean(isViewingSample)} />
     </div>
   );
 };

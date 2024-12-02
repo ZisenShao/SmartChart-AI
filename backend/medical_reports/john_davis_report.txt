@@ -1,0 +1,62 @@
+Clinical Evaluation Report
+Patient: John Davis
+ Date of Service: 09/30/2024
+ Provider: Jane Smith, MD, FACC
+ Department: Cardiology
+Chief Complaint
+Patient presents with intermittent episodes of substernal chest discomfort associated with physical exertion.
+History of Present Illness
+64-year-old male with known coronary artery disease presents for routine follow-up and management of stable angina pectoris. Patient reports experiencing intermittent episodes of retrosternal pressure during moderate physical exertion, rated 4/10 on pain scale, alleviating with rest within 5-7 minutes. Denies radiation of pain, diaphoresis, or associated autonomic symptoms. No episodes of rest angina or crescendo pattern noted.
+Physical Examination
+Vital Signs:
+BP: 142/88 mmHg
+HR: 76 bpm, regular rhythm
+RR: 16/min
+O2 Saturation: 98% on room air
+BMI: 28.4 kg/m²
+Cardiovascular: Regular rate and rhythm, S1 and S2 normal, no S3 or S4 gallop. Grade II/VI systolic ejection murmur at right upper sternal border. No peripheral edema.
+Respiratory: Clear to auscultation bilaterally, no wheezes or rales.
+Neurological: Alert and oriented x3, no focal deficits.
+Laboratory Findings
+Total Cholesterol: 210 mg/dL
+LDL: 138 mg/dL
+HDL: 42 mg/dL
+Triglycerides: 150 mg/dL
+HbA1c: 5.8%
+Troponin I: <0.04 ng/mL (negative)
+BNP: 85 pg/mL
+Diagnostic Studies
+Exercise stress test demonstrates reversible perfusion defect in the anterolateral wall, suggestive of inducible ischemia. Ejection fraction estimated at 52%.
+Assessment
+Stable angina pectoris (ICD-10: I20.8)
+Secondary to known coronary artery disease
+Currently stable on medical management
+Evidence of inducible ischemia on stress testing
+Essential hypertension (ICD-10: I10)
+Suboptimal control
+Hyperlipidemia (ICD-10: E78.5)
+Requiring ongoing statin therapy
+Plan
+Medications:
+Continue Aspirin 81mg daily for antiplatelet prophylaxis
+Continue Atorvastatin 40mg daily for hyperlipidemia
+Continue Metoprolol 25mg BID for rate control
+PRN Nitroglycerin 0.4mg sublingual for acute anginal episodes
+Procedures:
+Schedule coronary angiography for October 5, 2024, to evaluate coronary anatomy and assess for potential revascularization candidates
+Lifestyle Modifications:
+Strict adherence to sodium-restricted diet (<2g/day)
+Implementation of DASH diet principles
+Smoking cessation strongly advised
+Enrollment in cardiac rehabilitation program recommended
+Follow-up:
+Return to clinic in 2 weeks post-angiography
+Continue daily blood pressure monitoring
+Maintain angina diary
+Educational Points
+Patient educated on:
+Recognition of unstable anginal symptoms requiring immediate medical attention
+Proper technique for sublingual nitroglycerin administration
+Importance of medication compliance
+Cardiac risk factor modification strategies
+Warning signs requiring emergency evaluation

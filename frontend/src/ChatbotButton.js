@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { marked } from "marked";
 import "./ChatbotButton.css";
 
-function ChatbotButton() {
+function ChatbotButton({ isSampleMode }) {
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState([]); // Store chat messages
   const [newMessage, setNewMessage] = useState(""); // Store input text
@@ -170,6 +170,10 @@ function ChatbotButton() {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
+  // useEffect(() => {
+  //   console.log('ChatbotButton - isSampleMode:', isSampleMode);
+  // }, [isSampleMode]);
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() !== "") {
@@ -177,53 +181,29 @@ function ChatbotButton() {
       setNewMessage("");
       
       try {
-        // Get the current medical report based on mode
-        let medicalReport = '';
-        const isSampleMode = window.location.pathname.includes('sample');
+        const headers = {
+          "Content-Type": "application/json"
+        };
         
-        if (!isSampleMode) {
-          const authToken = localStorage.getItem('authToken');
-          if (authToken) {
-            const response = await fetch('http://localhost:8000/api/medical-data/', {
-              headers: {
-                'Authorization': `Bearer ${authToken}`,
-              }
-            });
-            if (response.ok) {
-              const data = await response.json();
-              if (data.reports && data.reports.length > 0) {
-                medicalReport = data.reports[0].content;
-              }
-            }
-          }
-        } else {
-          // In sample mode, get text from the report display
-          const reportElement = document.querySelector('.report-text');
-          medicalReport = reportElement ? reportElement.textContent : '';
+        if (!isSampleMode && localStorage.getItem('authToken')) {
+          headers['Authorization'] = `Bearer ${localStorage.getItem('authToken')}`;
         }
 
-        // Prepare headers based on mode
-        const headers = {
-          "Content-Type": "application/json",
+        const requestBody = {
+          message: newMessage,
+          is_sample: Boolean(isSampleMode)
         };
-        if (!isSampleMode) {
-          const authToken = localStorage.getItem('authToken');
-          if (authToken) {
-            headers['Authorization'] = `Bearer ${authToken}`;
-          }
-        }
+
+        // console.log('Sending request with body:', requestBody); // Add debug log
 
         const response = await fetch("http://localhost:8000/api/chat/", {
           method: "POST",
           headers: headers,
-          body: JSON.stringify({
-            message: newMessage,
-            is_sample: isSampleMode,
-            medicalReport: medicalReport,
-          }),
+          body: JSON.stringify(requestBody),
         });
 
         const data = await response.json();
+        // console.log('Received response:', data); // Add debug log
 
         if (data.success) {
           setMessages((prevMessages) => [
@@ -232,10 +212,25 @@ function ChatbotButton() {
           ]);
         } else {
           console.error("Error:", data.error);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: "Sorry, I encountered an error. Please try again.", sender: "bot" },
+          ]);
         }
       } catch (error) {
         console.error("Error:", error);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "Sorry, I'm having trouble connecting to the server. Please check your internet connection and try again.", sender: "bot" },
+        ]);
       }
+
+      setTimeout(() => {
+        const chatBody = document.querySelector(".chat-body");
+        if (chatBody) {
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+      }, 100);
     }
   };
 
@@ -318,5 +313,9 @@ function ChatbotButton() {
     </div>
   );
 }
+
+ChatbotButton.defaultProps = {
+  isSampleMode: false
+};
 
 export default ChatbotButton;
