@@ -4,6 +4,7 @@ from .views import (
     EnhancedChatView,
     CreateUserView,
     AddMedicalDataView,
+    MedicalDataView,
     StartChatSessionView,
     AddChatMessageView,
     LogQuestionView,
@@ -25,4 +26,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('convert_to_friendly_mode/', convert_to_friendly_mode, name='convert_to_friendly_mode'),
     path('read_medical_report/', read_medical_report, name='read_medical_report'),
+    path('medical-data/', MedicalDataView.as_view(), name='medical_data'),
+
 ]

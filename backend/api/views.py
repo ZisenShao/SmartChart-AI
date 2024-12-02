@@ -58,30 +58,39 @@ def convert_to_friendly_mode(request):
         try:
             data = json.loads(request.body)
             medical_report = data.get("medicalReport", "{}")
+            
+            # If it's just text content, create a basic structure
+            if isinstance(medical_report, str):
+                report_dict = {"txtContent": medical_report}
+            else:
+                report_dict = json.loads(medical_report)
 
-            # Parse the medical report string back into a dictionary
-            report_dict = json.loads(medical_report)
+            # Handle both structured and unstructured medical reports
+            if 'txtContent' in report_dict:
+                # For user uploaded text
+                prompt = f"""Convert the following medical report into a clear, concise patient-friendly format.
+                            Follow these strict guidelines:
+                            - Use simple, direct language
+                            - Limit each section to 2-3 sentences
+                            - Avoid medical jargon
+                            - Provide practical, actionable information
 
-            prompt = f"""Convert the medical report into a clear, concise patient-friendly format. 
-                        Follow these strict guidelines:
-                        - Use simple, direct language
-                        - Limit each section to 2-3 sentences
-                        - Avoid medical jargon
-                        - Provide practical, actionable information
+                            Format your response EXACTLY like this:
+                            
+                            Diagnosis: [Brief, clear explanation of the medical condition]
+                            Symptoms: [What the patient experiences]
+                            Medications: [List of medications with simple explanations]
+                            Test Results: [Key findings explained simply]
+                            Health Tips: [Practical lifestyle recommendations]
+                            Next Steps: [Specific upcoming medical actions or recommendations]
 
-                        Format your response EXACTLY like this:
-
-                        Diagnosis: [Brief, clear explanation of the medical condition]
-                        Symptoms: [What the patient experiences]
-                        Medications: [List of medications with simple explanations]
-                        Test Results: [Key findings explained simply]
-                        Health Tips: [Practical lifestyle recommendations]
-                        Next Steps: [Specific upcoming medical actions or recommendations]
-
-                        Patient Context:
-                        Name: {report_dict['patient']['name']}
-                        Age: {report_dict['history_of_present_illness']['age']}
-                        Chief Complaint: {report_dict['chief_complaint']}
+                            Medical Report:
+                            {report_dict['txtContent']}
+                            """
+            else:
+                # For structured sample data
+                prompt = f"""Convert the medical report into a clear, concise patient-friendly format.... 
+                        [rest of your existing prompt remains the same]
                         """
 
             genai.configure(api_key=os.environ["API_KEY"])
@@ -92,12 +101,30 @@ def convert_to_friendly_mode(request):
             return JsonResponse({"success": True, "friendlyReport": friendly_report})
 
         except Exception as e:
+            print(f"Error in convert_to_friendly_mode: {str(e)}")  # Add logging
             return JsonResponse({"success": False, "error": str(e)}, status=400)
 
     return JsonResponse(
         {"success": False, "error": "Invalid request method"}, status=405
     )
 
+class PatientInfoManager:
+    @staticmethod
+    def get_context_from_text(text: str) -> str:
+        """Generate patient context from uploaded text"""
+        return f"""
+        You are a medical assistant chatbot helping with a patient's medical condition.
+        You have access to their latest medical report: 
+        
+        {text}
+        
+        Important Guidelines:
+        1. Maintain a professional and empathetic tone
+        2. For any severe symptoms or emergency conditions, immediately advise calling emergency services
+        3. Don't make new diagnoses or change any medical advice
+        4. Refer complex medical questions to healthcare providers
+        5. Help patient understand their condition and follow their care plan
+        """
 
 # Change it after completing database settings
 class PatientInfo:
@@ -189,24 +216,34 @@ class PatientInfo:
 class EnhancedChatView(APIView):
     def __init__(self):
         super().__init__()
-        self.patient_info = PatientInfo()
+        self.patient_info = PatientInfo()  # Keep for sample mode
+        self.patient_manager = PatientInfoManager()
 
-    def format_prompt(self, user_message: str) -> str:
+    def format_prompt(self, user_message: str, user_text: str = None, is_sample: bool = False) -> str:
         """Combines system context and user message"""
+        if is_sample:
+            context = self.patient_info.get_system_context()
+        else:
+            context = self.patient_manager.get_context_from_text(user_text)
+
         return f"""
-        {self.patient_info.get_system_context()}
+        {context}
         
         User message: {user_message}
         
         Please provide a helpful response based on the available patient information and guidelines.
-        The user is {self.patient_info.patient_data['name']}
-        You don't need to tell the user what you know in every message unless he/she ask you to do so
         """
 
     def post(self, request):
         message = request.data.get("message")
+        is_sample = request.data.get("is_sample", False)
+        user_text = request.data.get("user_text")
+
         if not message:
             return JsonResponse({"error": "No message provided"}, status=400)
+
+        if not is_sample and not user_text:
+            return JsonResponse({"error": "No patient context provided"}, status=400)
 
         api_key = os.environ.get("API_KEY")
         if not api_key:
@@ -217,7 +254,7 @@ class EnhancedChatView(APIView):
 
         try:
             # Format the prompt with patient context
-            formatted_prompt = self.format_prompt(message)
+            formatted_prompt = self.format_prompt(message, user_text, is_sample)
 
             # Generate response
             response = model.generate_content(formatted_prompt)
@@ -236,27 +273,14 @@ class EnhancedChatView(APIView):
                 ]
                 if any(keyword in message.lower() for keyword in emergency_keywords):
                     response_message = (
-                        "⚠️ IMPORTANT: If you're experiencing severe chest pain or other "
-                        "emergency symptoms, please call emergency services (911) immediately. "
-                        "Do not wait. Your nitroglycerin is available for use as prescribed. "
+                        "⚠️ IMPORTANT: If you're experiencing severe symptoms or emergency conditions, "
+                        "please call emergency services (911) immediately. "
                         "\n\n" + response_message
                     )
 
                 return JsonResponse(
                     {
                         "message": response_message,
-                        "context": {
-                            "patient_name": self.patient_info.patient_data["name"],
-                            "last_visit": self.patient_info.patient_data["last_visit"],
-                            "next_appointment": {
-                                "type": self.patient_info.patient_data["appointments"][
-                                    0
-                                ]["type"],
-                                "date": self.patient_info.patient_data["appointments"][
-                                    0
-                                ]["date"],
-                            },
-                        },
                     },
                     status=200,
                 )
@@ -343,6 +367,33 @@ class AddMedicalDataView(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+class MedicalDataView(APIView):
+    def post(self, request):
+        """Save a new medical report"""
+        if not request.user.is_authenticated:
+            return JsonResponse({"error": "Authentication required"}, status=401)
+        
+        text_content = request.data.get('text')
+        if not text_content:
+            return JsonResponse({"error": "No text content provided"}, status=400)
+
+        try:
+            MedicalDataService.save_medical_report(request.user.id, text_content)
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    def get(self, request):
+        """Get medical report history"""
+        if not request.user.is_authenticated:
+            return JsonResponse({"error": "Authentication required"}, status=401)
+
+        try:
+            reports = MedicalDataService.get_report_history(request.user.id)
+            return JsonResponse({"reports": reports})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
 
 class StartChatSessionView(APIView):
