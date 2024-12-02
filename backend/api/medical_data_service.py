@@ -21,7 +21,7 @@ class MedicalDataService:
                 data_type="medical_report"
             ).latest('date_uploaded')
             return latest_report.data_content.get('text', '')
-        except ObjectDoesNotExist:
+        except MedicalData.DoesNotExist:
             return None
 
     @staticmethod

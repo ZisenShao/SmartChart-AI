@@ -175,19 +175,57 @@ function ChatbotButton() {
     if (newMessage.trim() !== "") {
       setMessages([...messages, { text: newMessage, sender: "user" }]);
       setNewMessage("");
-      // Send POST request to backend
+      
       try {
+        // Get the current medical report based on mode
+        let medicalReport = '';
+        const isSampleMode = window.location.pathname.includes('sample');
+        
+        if (!isSampleMode) {
+          const authToken = localStorage.getItem('authToken');
+          if (authToken) {
+            const response = await fetch('http://localhost:8000/api/medical-data/', {
+              headers: {
+                'Authorization': `Bearer ${authToken}`,
+              }
+            });
+            if (response.ok) {
+              const data = await response.json();
+              if (data.reports && data.reports.length > 0) {
+                medicalReport = data.reports[0].content;
+              }
+            }
+          }
+        } else {
+          // In sample mode, get text from the report display
+          const reportElement = document.querySelector('.report-text');
+          medicalReport = reportElement ? reportElement.textContent : '';
+        }
+
+        // Prepare headers based on mode
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        if (!isSampleMode) {
+          const authToken = localStorage.getItem('authToken');
+          if (authToken) {
+            headers['Authorization'] = `Bearer ${authToken}`;
+          }
+        }
+
         const response = await fetch("http://localhost:8000/api/chat/", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: newMessage }), // Send the content of the message
+          headers: headers,
+          body: JSON.stringify({
+            message: newMessage,
+            is_sample: isSampleMode,
+            medicalReport: medicalReport,
+          }),
         });
 
         const data = await response.json();
 
-        if (response.ok) {
+        if (data.success) {
           setMessages((prevMessages) => [
             ...prevMessages,
             { text: data.message, sender: "bot" },
@@ -198,11 +236,6 @@ function ChatbotButton() {
       } catch (error) {
         console.error("Error:", error);
       }
-
-      setTimeout(() => {
-        const chatBody = document.querySelector(".chat-body");
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }, 100);
     }
   };
 

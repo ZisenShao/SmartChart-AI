@@ -65,15 +65,33 @@ const Dashboard = ({ isViewingSample }) => {
     fetchMedicalReport();
   }, [isViewingSample]);
 
-  const handleTextSubmit = (text) => {
-    setUserText(text);
-    setMedicalReport({
-      default: {
-        txtContent: text,
-      },
-      friendly: null,
-    });
-    setIsFriendlyMode(false); // Reset to default mode when new text is submitted
+  const handleTextSubmit = async (text) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        if (authToken) {
+            await fetch('http://localhost:8000/api/medical-data/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                },
+                body: JSON.stringify({
+                    text: text
+                })
+            });
+        }
+        
+        setUserText(text);
+        setMedicalReport({
+            default: {
+                txtContent: text,
+            },
+            friendly: null,
+        });
+        setIsFriendlyMode(false);
+    } catch (error) {
+        console.error('Error saving medical report:', error);
+    }
   };
 
   const toggleMode = async () => {

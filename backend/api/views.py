@@ -1,3 +1,7 @@
+import os
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -6,9 +10,9 @@ from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import os
 from .models import User, MedicalData, ChatSession, ChatMessage, QuestionLog
 from .serializers import RegisterSerializer, LoginSerializer
+from .medical_data_service import MedicalDataService
 import google.generativeai as genai
 from datetime import datetime
 from typing import Dict, Optional
@@ -214,83 +218,71 @@ class PatientInfo:
 
 
 class EnhancedChatView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = []
+
     def __init__(self):
         super().__init__()
-        self.patient_info = PatientInfo()  # Keep for sample mode
-        self.patient_manager = PatientInfoManager()
-
-    def format_prompt(self, user_message: str, user_text: str = None, is_sample: bool = False) -> str:
-        """Combines system context and user message"""
-        if is_sample:
-            context = self.patient_info.get_system_context()
-        else:
-            context = self.patient_manager.get_context_from_text(user_text)
-
-        return f"""
-        {context}
-        
-        User message: {user_message}
-        
-        Please provide a helpful response based on the available patient information and guidelines.
-        """
+        self.patient_info = PatientInfo()
 
     def post(self, request):
-        message = request.data.get("message")
-        is_sample = request.data.get("is_sample", False)
-        user_text = request.data.get("user_text")
-
-        if not message:
-            return JsonResponse({"error": "No message provided"}, status=400)
-
-        if not is_sample and not user_text:
-            return JsonResponse({"error": "No patient context provided"}, status=400)
-
-        api_key = os.environ.get("API_KEY")
-        if not api_key:
-            return JsonResponse({"error": "API_KEY is not set."}, status=400)
-
-        genai.configure(api_key=os.environ["API_KEY"])
-        model = genai.GenerativeModel("gemini-1.5-flash")
-
         try:
-            # Format the prompt with patient context
-            formatted_prompt = self.format_prompt(message, user_text, is_sample)
+            message = request.data.get("message")
+            is_sample = request.data.get("is_sample", False)
+            medical_report = request.data.get("medicalReport", "")
+            
+            if not message:
+                return JsonResponse({"error": "No message provided"}, status=400)
 
-            # Generate response
-            response = model.generate_content(formatted_prompt)
-            response_message = response.text
-
-            if response_message:
-                # Check for emergency keywords
-                emergency_keywords = [
-                    "severe pain",
-                    "unbearable",
-                    "emergency",
-                    "911",
-                    "chest pain",
-                    "shortness of breath",
-                    "difficulty breathing",
-                ]
-                if any(keyword in message.lower() for keyword in emergency_keywords):
-                    response_message = (
-                        "⚠️ IMPORTANT: If you're experiencing severe symptoms or emergency conditions, "
-                        "please call emergency services (911) immediately. "
-                        "\n\n" + response_message
-                    )
-
-                return JsonResponse(
-                    {
-                        "message": response_message,
-                    },
-                    status=200,
-                )
+            # For sample mode, use the provided medical report
+            if is_sample and medical_report:
+                context = medical_report
+            # For authenticated users, try to get their medical report
+            elif request.user.is_authenticated:
+                from .medical_data_service import MedicalDataService
+                user_report = MedicalDataService.get_latest_report(request.user.user_id)
+                context = user_report if user_report else ""
             else:
-                return JsonResponse({"error": "No response from GEMINI."}, status=500)
+                context = ""
+
+            if not context:
+                return JsonResponse({
+                    "success": True,
+                    "message": "Hi there! I see you've reached out. Since I don't have a medical report yet, "
+                              "I can't provide specific information about your health. To best assist you, "
+                              "please provide me with the medical report."
+                })
+
+            # Create prompt with available context
+            prompt = f"""You are a medical assistant chatbot. Here's the context:
+
+            Medical Report:
+            {context}
+
+            User Question:
+            {message}
+
+            Please provide a helpful response based on the medical report context. 
+            Use simple, clear language and be empathetic.
+            If you encounter any severe symptoms or emergency conditions, immediately advise calling emergency services.
+            Do not make new diagnoses or change any medical advice.
+            Refer complex medical questions to healthcare providers.
+            Help the patient understand their condition and follow their care plan.
+            """
+
+            genai.configure(api_key=os.environ["API_KEY"])
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+            
+            return JsonResponse({
+                "success": True,
+                "message": response.text
+            })
 
         except Exception as e:
-            print(f"Error: {e}")
-            return JsonResponse({"error": "Error calling GEMINI API"}, status=500)
-
+            print(f"Error in EnhancedChatView: {str(e)}")
+            return JsonResponse({"error": f"Error processing request: {str(e)}"}, status=500)
+        
     def get_medication_info(self, medication_name: str) -> dict:
         """Helper method to get specific medication information"""
         for med in self.patient_info.patient_data["medications"]:
@@ -369,28 +361,25 @@ class AddMedicalDataView(APIView):
         )
 
 class MedicalDataView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         """Save a new medical report"""
-        if not request.user.is_authenticated:
-            return JsonResponse({"error": "Authentication required"}, status=401)
-        
         text_content = request.data.get('text')
         if not text_content:
             return JsonResponse({"error": "No text content provided"}, status=400)
 
         try:
-            MedicalDataService.save_medical_report(request.user.id, text_content)
+            MedicalDataService.save_medical_report(request.user.user_id, text_content)  # Changed from id to user_id
             return JsonResponse({"success": True})
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 
     def get(self, request):
         """Get medical report history"""
-        if not request.user.is_authenticated:
-            return JsonResponse({"error": "Authentication required"}, status=401)
-
         try:
-            reports = MedicalDataService.get_report_history(request.user.id)
+            reports = MedicalDataService.get_report_history(request.user.user_id)  # Changed from id to user_id
             return JsonResponse({"reports": reports})
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
