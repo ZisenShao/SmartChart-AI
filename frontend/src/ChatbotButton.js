@@ -18,7 +18,8 @@ function ChatbotButton({ isSampleMode }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fontSize, setFontSize] = useState(14);
-  const [showInitialMessage, setShowInitialMessage] = useState(true); // New state
+  const [showInitialMessage, setShowInitialMessage] = useState(true); // Controls the initial message
+  const [showDragMessage, setShowDragMessage] = useState(false); // New state for drag message
 
   const buttonRef = useRef(null);
   const chatPopupRef = useRef(null);
@@ -66,21 +67,22 @@ function ChatbotButton({ isSampleMode }) {
 
   const toggleChat = () => {
     setShowInitialMessage(false); // Hide initial message when toggling chat
+
     if (showChat) {
       setIsAnimating(true);
       setShowChat(false);
       setChatMode(null);
-      
+
       // Animate back to original position
       const animateBackToStart = () => {
         if (buttonRef.current) {
-          buttonRef.current.classList.add('animating');
+          buttonRef.current.classList.add("animating");
         }
         setButtonPosition(startPosition);
         setTimeout(() => {
           setIsAnimating(false);
           if (buttonRef.current) {
-            buttonRef.current.classList.remove('animating');
+            buttonRef.current.classList.remove("animating");
           }
         }, 300);
       };
@@ -98,6 +100,14 @@ function ChatbotButton({ isSampleMode }) {
           },
         ]);
       }
+
+      // Show the "You can drag me anywhere" message
+      setShowDragMessage(true);
+
+      // Hide the drag message after 5 seconds
+      setTimeout(() => {
+        setShowDragMessage(false);
+      }, 5000); // Adjust the duration as needed
     }
   };
 
@@ -124,6 +134,7 @@ function ChatbotButton({ isSampleMode }) {
       if (deltaX > dragThreshold || deltaY > dragThreshold) {
         hasMoved = true;
         setIsDragging(true);
+        setShowDragMessage(false); // Hide the drag message when dragging starts
       }
 
       if (hasMoved) {
@@ -170,31 +181,27 @@ function ChatbotButton({ isSampleMode }) {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
-  // useEffect(() => {
-  //   console.log('ChatbotButton - isSampleMode:', isSampleMode);
-  // }, [isSampleMode]);
-
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() !== "") {
       setMessages([...messages, { text: newMessage, sender: "user" }]);
       setNewMessage("");
-      
+
       try {
         const headers = {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         };
-        
-        if (!isSampleMode && localStorage.getItem('authToken')) {
-          headers['Authorization'] = `Bearer ${localStorage.getItem('authToken')}`;
+
+        if (!isSampleMode && localStorage.getItem("authToken")) {
+          headers["Authorization"] = `Bearer ${localStorage.getItem(
+            "authToken"
+          )}`;
         }
 
         const requestBody = {
           message: newMessage,
-          is_sample: Boolean(isSampleMode)
+          is_sample: Boolean(isSampleMode),
         };
-
-        // console.log('Sending request with body:', requestBody); // Add debug log
 
         const response = await fetch("http://localhost:8000/api/chat/", {
           method: "POST",
@@ -203,7 +210,6 @@ function ChatbotButton({ isSampleMode }) {
         });
 
         const data = await response.json();
-        // console.log('Received response:', data); // Add debug log
 
         if (data.success) {
           setMessages((prevMessages) => [
@@ -214,14 +220,20 @@ function ChatbotButton({ isSampleMode }) {
           console.error("Error:", data.error);
           setMessages((prevMessages) => [
             ...prevMessages,
-            { text: "Sorry, I encountered an error. Please try again.", sender: "bot" },
+            {
+              text: "Sorry, I encountered an error. Please try again.",
+              sender: "bot",
+            },
           ]);
         }
       } catch (error) {
         console.error("Error:", error);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: "Sorry, I'm having trouble connecting to the server. Please check your internet connection and try again.", sender: "bot" },
+          {
+            text: "Sorry, I'm having trouble connecting to the server. Please check your internet connection and try again.",
+            sender: "bot",
+          },
         ]);
       }
 
@@ -258,6 +270,9 @@ function ChatbotButton({ isSampleMode }) {
         </button>
         {showInitialMessage && (
           <div className="chatbot-initial-message">Hi - ask me anything!</div>
+        )}
+        {!showInitialMessage && showDragMessage && (
+          <div className="chatbot-drag-message">You can drag me anywhere!</div>
         )}
       </div>
 
@@ -315,7 +330,7 @@ function ChatbotButton({ isSampleMode }) {
 }
 
 ChatbotButton.defaultProps = {
-  isSampleMode: false
+  isSampleMode: false,
 };
 
 export default ChatbotButton;

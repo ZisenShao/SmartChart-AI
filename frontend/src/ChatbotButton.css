@@ -26,7 +26,8 @@
     /* Button size */
 }
 
-.chatbot-initial-message {
+.chatbot-initial-message,
+.chatbot-drag-message {
     background-color: #0078d7;
     color: white;
     padding: 8px 12px;
@@ -34,16 +35,17 @@
     position: absolute;
     top: -40px;
     left: calc(-175% - 20px);
-    /* Move message to the left of the icon */
+    /* Position to the left of the icon */
     white-space: nowrap;
+    z-index: 1001;
 }
 
-.chatbot-initial-message::after {
+.chatbot-initial-message::after,
+.chatbot-drag-message::after {
     content: "";
     position: absolute;
     bottom: -10px;
     left: 100%;
-    /* Arrow points to the icon */
     border-width: 10px;
     border-style: solid;
     border-color: #0078d7 transparent transparent transparent;
