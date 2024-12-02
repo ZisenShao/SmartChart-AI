@@ -14,6 +14,8 @@ This project uses Python Django for the backend, React for the frontend, and MyS
 * install docker
 
 ### Executing program
-Run ```docker compose up --build``` in root, or run ```npm install``` and ```npm start``` in ``frontend`` directory
+For first time use, run `docker compose up --build` in root, then run `docker ps`, copy paste the CONTAINER ID of backend to `docker exec -it [CONTAINER ID] bash`, then run `python3 manage.py migrate`. Now you can sign up and log in with user authetation.
 
-For using AI-plugin, generate your key from [Google AI Studio](https://aistudio.google.com/app/apikey) and add it to ```.env``` in backend.
+To only view the frontend, run ```npm install``` and ```npm start``` in ``frontend`` directory.
+
+<!-- For using AI-plugin, generate your key from [Google AI Studio](https://aistudio.google.com/app/apikey) and add it to ```.env``` in backend. -->

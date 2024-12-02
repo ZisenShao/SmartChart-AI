@@ -166,3 +166,20 @@ friendly-card {
     grid-template-columns: 1fr;
   }
 }
+
+.report-text {
+  white-space: pre-wrap;
+  text-align: left;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.full-report-container {
+  margin: 20px 0;
+  padding: 0 20px;
+}

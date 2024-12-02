@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LoginButton from "./LoginButton";
 import axios from "axios";
+import TextUploadComponent from './TextUploadComponent';
 import clipboard from "./dashboard assets/Clipboard.svg";
 import food from "./dashboard assets/Food.svg";
 import group from "./dashboard assets/Group.svg";
@@ -19,54 +20,80 @@ const Dashboard = ({ isViewingSample }) => {
     default: null,
     friendly: null,
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [friendlyCards, setFriendlyCards] = useState([]);
+  const [userText, setUserText] = useState('');
 
   useEffect(() => {
     const fetchMedicalReport = async () => {
-      try {
-        console.log("Fetching medical report...");
-        const response = await axios.get(
-          "http://localhost:8000/api/read_medical_report/"
-        );
+      if (isViewingSample) {
+        setIsLoading(true);
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/read_medical_report/"
+          );
 
-        const txtResponse = await fetch("/reports/john_davis_report.txt");
-        const txtContent = await txtResponse.text();
+          const txtResponse = await fetch("/reports/john_davis_report.txt");
+          const txtContent = await txtResponse.text();
 
-        if (response.data.success) {
-          setMedicalReport({
-            default: {
-              ...response.data.medicalReport,
-              txtContent,
-            },
-            friendly: null,
-          });
+          if (response.data.success) {
+            setMedicalReport({
+              default: {
+                ...response.data.medicalReport,
+                txtContent,
+              },
+              friendly: null,
+            });
+          }
+        } catch (error) {
+          console.error(
+            "Error fetching medical report:",
+            error.response || error.message || error
+          );
+        } finally {
           setIsLoading(false);
         }
-      } catch (error) {
-        console.error(
-          "Error fetching medical report:",
-          error.response || error.message || error
-        );
+      } else {
+        // Reset states when not viewing sample
+        setMedicalReport({ default: null, friendly: null });
+        setFriendlyCards([]);
+        setUserText('');
         setIsLoading(false);
       }
     };
 
     fetchMedicalReport();
-  }, []);
+  }, [isViewingSample]);
+
+  const handleTextSubmit = (text) => {
+    setUserText(text);
+    setMedicalReport({
+      default: {
+        txtContent: text,
+      },
+      friendly: null,
+    });
+    setIsFriendlyMode(false); // Reset to default mode when new text is submitted
+  };
 
   const toggleMode = async () => {
     if (!isFriendlyMode && !medicalReport.friendly) {
       try {
+        if (!isViewingSample && !userText) {
+          alert("Please upload a medical report first");
+          return;
+        }
+
         const response = await axios.post(
           "http://localhost:8000/api/convert_to_friendly_mode/",
           {
-            medicalReport: JSON.stringify(medicalReport.default),
+            medicalReport: JSON.stringify(
+              isViewingSample ? medicalReport.default : { txtContent: userText }
+            ),
           }
         );
 
         if (response.data.success) {
-          // Parse the friendly report into cards
           const friendlyText = response.data.friendlyReport;
           const cardSections = [
             {
@@ -109,13 +136,14 @@ const Dashboard = ({ isViewingSample }) => {
         }
       } catch (error) {
         console.error("Error converting to friendly mode:", error);
+        alert("Error converting to friendly mode. Please try again.");
+        return;
       }
     }
 
     setIsFriendlyMode((prevMode) => !prevMode);
   };
 
-  // Helper function to extract sections from the friendly report
   const extractSection = (text, sectionTitle) => {
     const regex = new RegExp(
       `(?<=${sectionTitle}:)(.*?)(?=(\\n[A-Z][a-z]|$))`,
@@ -155,24 +183,25 @@ const Dashboard = ({ isViewingSample }) => {
         {isFriendlyMode ? "Detailed Clinical Notes" : "General Information"}
       </h1>
 
-      {medicalReport.default ? (
-        <div className="patient-info">
-          <p>
-            <img src={person} alt="Person Icon" className="icon" />
-            Patient Name: {medicalReport.default.patient.name || "N/A"}
-          </p>
-          <p>
-            <img src={stethoscope} alt="Stethoscope Icon" className="icon" />
-            Date of Visit:{" "}
-            {medicalReport.default.patient.date_of_service || "N/A"}
-          </p>
-          <p>
-            <img src={stethoscope} alt="Provider Icon" className="icon" />
-            Provider: {medicalReport.default.patient.provider || "N/A"}
-          </p>
-        </div>
+      {isViewingSample ? (
+        medicalReport.default && (
+          <div className="patient-info">
+            <p>
+              <img src={person} alt="Person Icon" className="icon" />
+              Patient Name: {medicalReport.default.patient?.name || "N/A"}
+            </p>
+            <p>
+              <img src={stethoscope} alt="Stethoscope Icon" className="icon" />
+              Date of Visit: {medicalReport.default.patient?.date_of_service || "N/A"}
+            </p>
+            <p>
+              <img src={stethoscope} alt="Provider Icon" className="icon" />
+              Provider: {medicalReport.default.patient?.provider || "N/A"}
+            </p>
+          </div>
+        )
       ) : (
-        <div>Loading patient info...</div>
+        !isFriendlyMode && <TextUploadComponent onTextSubmit={handleTextSubmit} />
       )}
 
       {isFriendlyMode ? (
@@ -188,43 +217,22 @@ const Dashboard = ({ isViewingSample }) => {
           ))}
         </div>
       ) : (
-        <div className="full-report-container">
-          <pre
-            style={{
-              whiteSpace: "pre-wrap",
-              textAlign: "left",
-              width: "100%",
-              fontFamily: "Arial, sans-serif",
-              lineHeight: "1.6",
-              padding: "20px",
-              backgroundColor: "#f9f9f9",
-              borderRadius: "8px",
-              overflowX: "auto",
-            }}
-          >
-            {medicalReport &&
-            medicalReport.default &&
-            medicalReport.default.txtContent ? (
-              <pre
-                style={{
-                  whiteSpace: "pre-wrap",
-                  textAlign: "left",
-                  width: "100%",
-                  fontFamily: "Arial, sans-serif",
-                  lineHeight: "1.6",
-                  padding: "20px",
-                  backgroundColor: "#f9f9f9",
-                  borderRadius: "8px",
-                  overflowX: "auto",
-                }}
-              >
+        <>
+          {isViewingSample && medicalReport?.default?.txtContent && (
+            <div className="full-report-container">
+              <pre className="report-text">
                 {medicalReport.default.txtContent}
               </pre>
-            ) : (
-              <p>No report available</p>
-            )}
-          </pre>
-        </div>
+            </div>
+          )}
+          {!isViewingSample && userText && (
+            <div className="full-report-container">
+              <pre className="report-text">
+                {userText}
+              </pre>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
