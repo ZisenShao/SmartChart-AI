@@ -27,12 +27,22 @@ Run ```npm install``` and ```npm start``` in ``frontend`` directory.
 
 ## Usage
 
-### What works well
+- **User Authentication**: Sign-up & log-in feature that secure medical data to protect user privacy.  
+- **Quick Sample View**: A preview page showcasing the dashboard and chatbot features.  
+- **Medical Report Processing**: Users can upload medical reports and toggle to a friendly mode, where AI simplifies medical data into cards with easy-to-understand summaries.
+- **Integrated Chatbot**: An chatbot helps users answer questions related to their medical reports.  
+- **Better UI**: Drag-and-drop chatbot, floating card and adjustable font size for better user experience.
 
 ### What does not work well yet
+- **Web Scraping**: While Selenium and BeautifulSoup worked locally, integrating them into the Docker application caused unresolved technical issues. The unfinished work is cuurent in `scraping-feature` branch.
+
 
 ## Next Step
+1. **Enhance Dashboard**: Link dashboard elements to both original and simplified data, enable the AI to explain detailed part when clicking on a specific text in dashboard.
+2. **Web Scraping**: Fix Docker integration for web scraping to scrape user's Epic MyChart report.
+3. **Expand Database Features**: Fully implement chat history saving and question tracking in database to provide better chatbot context and continuity.
 
 ## Acknowledgement
+Large thanks to our mentors from Epic - Brandon Lusk, Brock Humblet and Dan Wortmann for their invaluable guidance throughout the semester! Special thanks for instructor Amber Field for teaching Agile principles, as well as TA and peer mentor for for their constant support.
 
 <!-- For using AI-plugin, generate your key from [Google AI Studio](https://aistudio.google.com/app/apikey) and add it to ```.env``` in backend. -->
